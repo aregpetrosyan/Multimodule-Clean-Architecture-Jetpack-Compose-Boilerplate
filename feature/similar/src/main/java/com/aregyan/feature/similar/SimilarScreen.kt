@@ -33,6 +33,7 @@ fun SimilarScreen(
             onClick = {
                 when (it) {
                     is PhotoGridUiAction.FavoriteClick -> viewModel.onIntent(SimilarIntent.OnFavoriteClick(it.photo))
+                    is PhotoGridUiAction.PhotoClick -> viewModel.onIntent(SimilarIntent.OnPhotoClick(it.photo))
                     else -> { /* No action required */
                     }
                 }

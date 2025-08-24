@@ -28,6 +28,7 @@ class SimilarViewModel @Inject constructor(
         when (intent) {
             is SimilarIntent.LoadSimilarPhotos -> loadSimilarPhotos(intent.query)
             is SimilarIntent.OnFavoriteClick -> onFavoriteClick(intent.photo)
+            is SimilarIntent.OnPhotoClick -> onPhotoClick(intent.photo)
             else -> { /* No action required */
             }
         }
@@ -62,10 +63,18 @@ class SimilarViewModel @Inject constructor(
             favoritesUseCase.toggleFavorite(photo)
         }
     }
+
+    private fun onPhotoClick(photo: Photo?) {
+        val currentState = state.value
+        if (currentState is LceUiState.Success) {
+            _state.setSuccess(currentState.data.copy(selectedPhoto = photo))
+        }
+    }
 }
 
 sealed class SimilarIntent : UiIntent {
     data class LoadSimilarPhotos(val query: String) : SimilarIntent()
     data class OnFavoriteClick(val photo: Photo) : SimilarIntent()
+    data class OnPhotoClick(val photo: Photo?) : SimilarIntent()
     object Retry : SimilarIntent(), RetryIntentMarker
 }
