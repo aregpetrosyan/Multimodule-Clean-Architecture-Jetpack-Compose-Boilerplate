@@ -1,7 +1,7 @@
 package com.aregyan.feature.favorites.di
 
-import com.aregyan.feature.favorites.FavoritesUseCaseImpl
 import com.aregyan.feature.favorites.api.FavoritesUseCase
+import com.aregyan.feature.favorites.domain.FavoritesUseCaseImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

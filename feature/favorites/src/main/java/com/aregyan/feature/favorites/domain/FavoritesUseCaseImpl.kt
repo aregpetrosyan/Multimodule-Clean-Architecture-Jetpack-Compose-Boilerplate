@@ -1,4 +1,4 @@
-package com.aregyan.feature.favorites
+package com.aregyan.feature.favorites.domain
 
 import com.aregyan.core.domain.Photo
 import com.aregyan.feature.favorites.api.FavoritesUseCase
