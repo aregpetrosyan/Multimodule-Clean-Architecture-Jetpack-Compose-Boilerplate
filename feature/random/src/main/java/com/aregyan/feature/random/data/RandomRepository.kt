@@ -1,7 +1,5 @@
-package com.aregyan.feature.random
+package com.aregyan.feature.random.data
 
-import com.aregyan.core.data.api.RandomResponse
-import com.aregyan.core.network.RandomApiService
 import javax.inject.Inject
 
 class RandomRepository @Inject constructor(

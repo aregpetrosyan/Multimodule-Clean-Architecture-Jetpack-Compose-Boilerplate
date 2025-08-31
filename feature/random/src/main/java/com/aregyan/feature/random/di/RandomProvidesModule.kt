@@ -1,5 +1,6 @@
-package com.aregyan.core.network
+package com.aregyan.feature.random.di
 
+import com.aregyan.feature.random.data.RandomApiService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -9,11 +10,10 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object ApiServiceModule {
-
+class RandomProvidesModule {
     @Provides
     @Singleton
-    fun provideSimilarApiService(retrofit: Retrofit): SimilarApiService {
-        return retrofit.create(SimilarApiService::class.java)
+    fun provideRandomApiService(retrofit: Retrofit): RandomApiService {
+        return retrofit.create(RandomApiService::class.java)
     }
 }

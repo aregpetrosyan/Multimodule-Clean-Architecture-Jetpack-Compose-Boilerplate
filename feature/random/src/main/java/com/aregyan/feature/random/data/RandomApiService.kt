@@ -1,6 +1,5 @@
-package com.aregyan.core.network
+package com.aregyan.feature.random.data
 
-import com.aregyan.core.data.api.RandomResponse
 import retrofit2.http.GET
 
 fun interface RandomApiService {

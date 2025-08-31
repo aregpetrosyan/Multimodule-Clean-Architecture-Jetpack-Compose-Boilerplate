@@ -1,5 +1,8 @@
-package com.aregyan.core.data.api
+package com.aregyan.feature.random.data
 
+import com.aregyan.core.data.Links
+import com.aregyan.core.data.Urls
+import com.aregyan.core.data.User
 import com.squareup.moshi.Json
 
 data class RandomResponse(
@@ -51,43 +54,4 @@ data class Collection(
     @Json(name = "updated_at") val updatedAt: String,
     @Json(name = "cover_photo") val coverPhoto: Any?,
     val user: Any?
-)
-
-data class Urls(
-    val raw: String,
-    val full: String,
-    val regular: String,
-    val small: String,
-    val thumb: String
-)
-
-data class Links(
-    val self: String,
-    val html: String,
-    val download: String,
-    @Json(name = "download_location") val downloadLocation: String
-)
-
-data class User(
-    val id: String,
-    @Json(name = "updated_at") val updatedAt: String,
-    val username: String,
-    val name: String,
-    @Json(name = "portfolio_url") val portfolioUrl: String?,
-    val bio: String?,
-    val location: String?,
-    @Json(name = "total_likes") val totalLikes: Int,
-    @Json(name = "total_photos") val totalPhotos: Int,
-    @Json(name = "total_collections") val totalCollections: Int,
-    @Json(name = "instagram_username") val instagramUsername: String?,
-    @Json(name = "twitter_username") val twitterUsername: String?,
-    val links: UserLinks
-)
-
-data class UserLinks(
-    val self: String,
-    val html: String,
-    val photos: String,
-    val likes: String,
-    val portfolio: String
 )

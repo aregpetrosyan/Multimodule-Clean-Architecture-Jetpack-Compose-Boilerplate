@@ -1,5 +1,8 @@
 package com.aregyan.core.data.api
 
+import com.aregyan.core.data.Links
+import com.aregyan.core.data.Urls
+import com.aregyan.core.data.User
 import com.squareup.moshi.Json
 
 data class SimilarResponse(
