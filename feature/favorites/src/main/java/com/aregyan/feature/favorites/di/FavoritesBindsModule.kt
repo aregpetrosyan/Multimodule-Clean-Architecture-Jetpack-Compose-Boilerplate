@@ -1,7 +1,7 @@
 package com.aregyan.feature.favorites.di
 
-import com.aregyan.feature.favorites.api.FavoritesRepository
-import com.aregyan.feature.favorites.data.FavoritesRepositoryImpl
+import com.aregyan.feature.favorites.FavoritesUseCaseImpl
+import com.aregyan.feature.favorites.api.FavoritesUseCase
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -10,11 +10,11 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-abstract class FavoritesModule {
+abstract class FavoritesBindsModule {
 
     @Binds
     @Singleton
-    abstract fun bindFavoritesRepository(
-        impl: FavoritesRepositoryImpl
-    ): FavoritesRepository
+    abstract fun bindFavoritesUseCase(
+        impl: FavoritesUseCaseImpl
+    ): FavoritesUseCase
 }

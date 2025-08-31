@@ -1,20 +1,19 @@
 package com.aregyan.feature.favorites.data
 
 import com.aregyan.core.domain.Photo
-import com.aregyan.feature.favorites.api.FavoritesRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class FavoritesRepositoryImpl @Inject constructor(
+class FavoritesRepository @Inject constructor(
     private val favoritesPreferences: FavoritesPreferences
-) : FavoritesRepository {
+) {
 
-    override suspend fun toggleFavorite(photo: Photo): Result<Boolean> {
+    suspend fun toggleFavorite(photo: Photo): Result<Boolean> {
         val result = favoritesPreferences.toggleFavorite(photo)
         return Result.success(result)
     }
 
-    override fun observeFavorites(): Flow<Set<Photo>> {
+    fun observeFavorites(): Flow<Set<Photo>> {
         return favoritesPreferences.observeFavorites()
     }
 }
