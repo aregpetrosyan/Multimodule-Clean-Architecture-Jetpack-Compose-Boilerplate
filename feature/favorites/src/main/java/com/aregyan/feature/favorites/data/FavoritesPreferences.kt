@@ -1,4 +1,4 @@
-package com.aregyan.feature.favorites
+package com.aregyan.feature.favorites.data
 
 import com.aregyan.core.datastore.DataStoreKeys
 import com.aregyan.core.datastore.DataStoreManager

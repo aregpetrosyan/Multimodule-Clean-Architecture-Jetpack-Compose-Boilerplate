@@ -1,6 +1,7 @@
-package com.aregyan.feature.favorites
+package com.aregyan.feature.favorites.di
 
 import com.aregyan.core.datastore.DataStoreManager
+import com.aregyan.feature.favorites.data.FavoritesPreferences
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
