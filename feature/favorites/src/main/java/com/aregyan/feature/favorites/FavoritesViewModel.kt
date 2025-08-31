@@ -39,30 +39,19 @@ class FavoritesViewModel @Inject constructor(
     private fun reduce(
         currentState: LceUiState<FavoriteState>,
         intent: FavoritesIntent
-    ): LceUiState<FavoriteState> {
-        return when (intent) {
-            FavoritesIntent.LoadFavorites -> LceUiState.Loading
+    ): LceUiState<FavoriteState> = when (intent) {
+        FavoritesIntent.LoadFavorites, FavoritesIntent.Retry -> LceUiState.Loading
 
-            is FavoritesIntent.FavoritesLoaded -> {
-                if (intent.favorites.isEmpty()) {
-                    LceUiState.Idle
-                } else {
-                    LceUiState.Success(FavoriteState(intent.favorites.toList()))
-                }
-            }
+        is FavoritesIntent.FavoritesLoaded ->
+            if (intent.favorites.isEmpty()) LceUiState.Idle
+            else LceUiState.Success(FavoriteState(intent.favorites.toList()))
 
-            is FavoritesIntent.OnPhotoClick -> {
-                if (currentState is LceUiState.Success) {
-                    currentState.copy(
-                        data = currentState.data.copy(selectedPhoto = intent.photo)
-                    )
-                } else currentState
-            }
+        is FavoritesIntent.OnPhotoClick ->
+            (currentState as? LceUiState.Success)?.copy(
+                data = currentState.data.copy(selectedPhoto = intent.photo)
+            ) ?: currentState
 
-            is FavoritesIntent.OnFavoriteClick -> currentState
-            is FavoritesIntent.OnSimilarClick -> currentState
-            FavoritesIntent.Retry -> LceUiState.Loading
-        }
+        else -> currentState
     }
 
     private fun loadFavorites() {
