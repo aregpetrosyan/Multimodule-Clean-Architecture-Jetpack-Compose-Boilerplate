@@ -1,4 +1,4 @@
-package com.aregyan.feature.explore
+package com.aregyan.feature.explore.data
 
 import retrofit2.http.GET
 import retrofit2.http.Query

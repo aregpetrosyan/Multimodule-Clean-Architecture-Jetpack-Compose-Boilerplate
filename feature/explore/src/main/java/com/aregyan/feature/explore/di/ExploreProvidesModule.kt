@@ -1,5 +1,6 @@
-package com.aregyan.feature.explore
+package com.aregyan.feature.explore.di
 
+import com.aregyan.feature.explore.data.ExploreApiService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
