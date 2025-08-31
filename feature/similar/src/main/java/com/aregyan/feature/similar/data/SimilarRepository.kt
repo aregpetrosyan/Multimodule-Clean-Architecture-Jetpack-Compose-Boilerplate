@@ -1,7 +1,5 @@
-package com.aregyan.feature.similar
+package com.aregyan.feature.similar.data
 
-import com.aregyan.core.data.api.SimilarResponse
-import com.aregyan.core.network.SimilarApiService
 import javax.inject.Inject
 
 class SimilarRepository @Inject constructor(

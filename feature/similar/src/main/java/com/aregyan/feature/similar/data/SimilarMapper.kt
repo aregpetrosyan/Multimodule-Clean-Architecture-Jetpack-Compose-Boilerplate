@@ -1,6 +1,5 @@
-package com.aregyan.core.data.apiMappers
+package com.aregyan.feature.similar.data
 
-import com.aregyan.core.data.api.SimilarResponse
 import com.aregyan.core.domain.Photo
 
 fun SimilarResponse.toDomain(): List<Photo> {

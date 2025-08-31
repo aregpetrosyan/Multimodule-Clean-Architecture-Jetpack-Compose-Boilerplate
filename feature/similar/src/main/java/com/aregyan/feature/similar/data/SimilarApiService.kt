@@ -1,6 +1,5 @@
-package com.aregyan.core.network
+package com.aregyan.feature.similar.data
 
-import com.aregyan.core.data.api.SimilarResponse
 import retrofit2.http.GET
 import retrofit2.http.Query
 

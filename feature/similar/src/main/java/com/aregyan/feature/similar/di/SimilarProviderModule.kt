@@ -1,5 +1,6 @@
-package com.aregyan.core.network
+package com.aregyan.feature.similar.di
 
+import com.aregyan.feature.similar.data.SimilarApiService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -9,7 +10,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object ApiServiceModule {
+object SimilarProviderModule {
 
     @Provides
     @Singleton

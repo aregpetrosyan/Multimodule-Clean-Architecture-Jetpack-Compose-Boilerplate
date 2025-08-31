@@ -1,4 +1,4 @@
-package com.aregyan.core.data.api
+package com.aregyan.feature.similar.data
 
 import com.aregyan.core.data.Links
 import com.aregyan.core.data.Urls

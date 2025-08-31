@@ -1,7 +1,8 @@
-package com.aregyan.feature.similar
+package com.aregyan.feature.similar.domain
 
-import com.aregyan.core.data.apiMappers.toDomain
 import com.aregyan.core.domain.Photo
+import com.aregyan.feature.similar.data.SimilarRepository
+import com.aregyan.feature.similar.data.toDomain
 import jakarta.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow

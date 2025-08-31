@@ -10,6 +10,7 @@ import com.aregyan.core.ui.base.setError
 import com.aregyan.core.ui.base.setLoading
 import com.aregyan.core.ui.base.setSuccess
 import com.aregyan.feature.favorites.api.FavoritesUseCase
+import com.aregyan.feature.similar.domain.SimilarPhotosUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
