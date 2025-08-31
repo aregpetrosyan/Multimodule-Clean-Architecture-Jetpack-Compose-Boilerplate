@@ -1,5 +1,7 @@
-package com.aregyan.core.datastore
+package com.aregyan.feature.favorites
 
+import com.aregyan.core.datastore.DataStoreKeys
+import com.aregyan.core.datastore.DataStoreManager
 import com.aregyan.core.domain.Photo
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first

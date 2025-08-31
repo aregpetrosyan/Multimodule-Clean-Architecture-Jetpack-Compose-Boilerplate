@@ -1,6 +1,5 @@
 package com.aregyan.feature.favorites
 
-import com.aregyan.core.datastore.FavoritesPreferences
 import com.aregyan.core.domain.Photo
 import com.aregyan.feature.favorites.api.FavoritesRepository
 import kotlinx.coroutines.flow.Flow
