@@ -7,8 +7,6 @@ import com.aregyan.core.ui.base.LceUiState
 import com.aregyan.core.ui.base.RetryIntentMarker
 import com.aregyan.core.ui.base.UiEvent
 import com.aregyan.core.ui.base.UiIntent
-import com.aregyan.core.ui.base.setIdle
-import com.aregyan.core.ui.base.setSuccess
 import com.aregyan.feature.favorites.api.FavoritesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -19,51 +17,71 @@ import javax.inject.Inject
 class FavoritesViewModel @Inject constructor(
     private val favoritesUseCase: FavoritesUseCase
 ) : BaseViewModel<FavoritesIntent, LceUiState<FavoriteState>>() {
+
     override fun createInitialState() = LceUiState.Idle
 
+    init {
+        onIntent(FavoritesIntent.LoadFavorites)
+    }
+
     override fun handleIntent(intent: FavoritesIntent) {
+        _state.value = reduce(state.value, intent)
+
         when (intent) {
             FavoritesIntent.LoadFavorites -> loadFavorites()
-            is FavoritesIntent.OnFavoriteClick -> onFavoriteClick(intent.photo)
-            is FavoritesIntent.OnPhotoClick -> onPhotoClick(intent.photo)
-            is FavoritesIntent.OnSimilarClick -> onSimilarClick(intent.photo)
-            else -> { /* No action required */
+            is FavoritesIntent.OnFavoriteClick -> toggleFavorite(intent.photo)
+            is FavoritesIntent.OnSimilarClick -> navigateToSimilar(intent.photo)
+            else -> { /* No side effects for other intents */
             }
         }
     }
 
-    init {
-        onIntent(FavoritesIntent.LoadFavorites)
+    private fun reduce(
+        currentState: LceUiState<FavoriteState>,
+        intent: FavoritesIntent
+    ): LceUiState<FavoriteState> {
+        return when (intent) {
+            FavoritesIntent.LoadFavorites -> LceUiState.Loading
+
+            is FavoritesIntent.FavoritesLoaded -> {
+                if (intent.favorites.isEmpty()) {
+                    LceUiState.Idle
+                } else {
+                    LceUiState.Success(FavoriteState(intent.favorites.toList()))
+                }
+            }
+
+            is FavoritesIntent.OnPhotoClick -> {
+                if (currentState is LceUiState.Success) {
+                    currentState.copy(
+                        data = currentState.data.copy(selectedPhoto = intent.photo)
+                    )
+                } else currentState
+            }
+
+            is FavoritesIntent.OnFavoriteClick -> currentState
+            is FavoritesIntent.OnSimilarClick -> currentState
+            FavoritesIntent.Retry -> LceUiState.Loading
+        }
     }
 
     private fun loadFavorites() {
         viewModelScope.launch {
             favoritesUseCase.observeFavorites()
                 .distinctUntilChanged()
-                .collect {
-                    if (it.isEmpty()) {
-                        _state.setIdle()
-                    } else {
-                        _state.setSuccess(FavoriteState(it.toList()))
-                    }
+                .collect { favorites ->
+                    onIntent(FavoritesIntent.FavoritesLoaded(favorites))
                 }
         }
     }
 
-    private fun onFavoriteClick(photo: Photo) {
+    private fun toggleFavorite(photo: Photo) {
         viewModelScope.launch {
             favoritesUseCase.toggleFavorite(photo)
         }
     }
 
-    private fun onPhotoClick(photo: Photo?) {
-        val currentState = state.value
-        if (currentState is LceUiState.Success) {
-            _state.setSuccess(currentState.data.copy(selectedPhoto = photo))
-        }
-    }
-
-    private fun onSimilarClick(photo: Photo) {
+    private fun navigateToSimilar(photo: Photo) {
         viewModelScope.launch {
             _navigationEvents.emit(FavoriteNavigationEvent.ShowSimilarPhotos(photo))
         }
@@ -75,6 +93,7 @@ sealed class FavoritesIntent : UiIntent {
     data class OnFavoriteClick(val photo: Photo) : FavoritesIntent()
     data class OnPhotoClick(val photo: Photo?) : FavoritesIntent()
     data class OnSimilarClick(val photo: Photo) : FavoritesIntent()
+    data class FavoritesLoaded(val favorites: Set<Photo>) : FavoritesIntent()
     object Retry : FavoritesIntent(), RetryIntentMarker
 }
 
