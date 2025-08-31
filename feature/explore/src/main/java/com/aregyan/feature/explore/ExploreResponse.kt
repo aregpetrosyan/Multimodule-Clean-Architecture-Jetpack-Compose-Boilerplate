@@ -1,4 +1,4 @@
-package com.aregyan.core.data.api
+package com.aregyan.feature.explore
 
 import com.squareup.moshi.Json
 

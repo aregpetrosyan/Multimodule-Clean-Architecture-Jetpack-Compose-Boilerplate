@@ -75,4 +75,9 @@ feature-common = [
     "androidx-hilt-navigation-compose",
     "nav3-runtime",
     "nav3-ui",
+    "retrofit",
+    "retrofit-moshi",
+    "moshi",
+    "moshi-kotlin",
+    "okhttp-logging",
 ]

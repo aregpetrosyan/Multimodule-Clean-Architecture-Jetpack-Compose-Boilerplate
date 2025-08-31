@@ -1,7 +1,5 @@
 package com.aregyan.feature.explore
 
-import com.aregyan.core.data.api.ExploreResponse
-import com.aregyan.core.network.ExploreApiService
 import javax.inject.Inject
 
 private const val ORDER_BY_LATEST = "latest"

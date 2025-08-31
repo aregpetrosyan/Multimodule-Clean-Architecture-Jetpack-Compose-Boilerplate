@@ -1,6 +1,5 @@
-package com.aregyan.core.data.apiMappers
+package com.aregyan.feature.explore
 
-import com.aregyan.core.data.api.ExploreResponse
 import com.aregyan.core.domain.Photo
 
 fun List<ExploreResponse>.toDomain(): List<Photo> {

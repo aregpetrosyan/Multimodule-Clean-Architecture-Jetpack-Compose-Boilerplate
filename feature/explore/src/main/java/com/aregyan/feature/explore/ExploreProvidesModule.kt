@@ -1,18 +1,18 @@
-package com.aregyan.feature.favorites
+package com.aregyan.feature.explore
 
-import com.aregyan.core.datastore.DataStoreManager
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import retrofit2.Retrofit
 import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-class FavoritesProvidesModule {
+class ExploreProvidesModule {
     @Provides
     @Singleton
-    fun provideFavoritesPreferences(dataStoreManager: DataStoreManager): FavoritesPreferences {
-        return FavoritesPreferences(dataStoreManager)
+    fun provideExploreApiService(retrofit: Retrofit): ExploreApiService {
+        return retrofit.create(ExploreApiService::class.java)
     }
 }

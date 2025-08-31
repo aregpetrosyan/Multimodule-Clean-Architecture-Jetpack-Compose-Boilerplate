@@ -31,7 +31,6 @@ dependencies {
     implementation(projects.core.analytics)
     implementation(projects.core.ui)
     implementation(projects.core.domain)
-    implementation(projects.core.data)
     implementation(projects.feature.favorites.api)
 
     implementation(libs.hilt.android)
