@@ -35,7 +35,7 @@ class SimilarViewModel @Inject constructor(
         }
     }
 
-    private fun reduce(
+    override fun reduce(
         currentState: LceUiState<SimilarState>,
         intent: SimilarIntent
     ): LceUiState<SimilarState> = when (intent) {

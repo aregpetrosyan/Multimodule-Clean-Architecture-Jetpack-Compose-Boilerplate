@@ -41,6 +41,13 @@ class ExploreViewModel @Inject constructor(
         }
     }
 
+    override fun reduce(
+        currentState: LceUiState<ExploreState>,
+        intent: ExploreIntent
+    ): LceUiState<ExploreState> {
+        TODO("Not yet implemented")
+    }
+
     init {
         onIntent(ExploreIntent.LoadPhotos)
     }

@@ -38,6 +38,13 @@ class RandomViewModel @Inject constructor(
         }
     }
 
+    override fun reduce(
+        currentState: LceUiState<Photo>,
+        intent: RandomIntent
+    ): LceUiState<Photo> {
+        TODO("Not yet implemented")
+    }
+
     init {
         onIntent(RandomIntent.LoadRandomPhoto)
     }

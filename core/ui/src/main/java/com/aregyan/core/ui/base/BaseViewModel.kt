@@ -50,4 +50,5 @@ abstract class BaseViewModel<I : UiIntent, S : UiState> : ViewModel() {
 
     protected abstract fun createInitialState(): S
     protected abstract fun handleIntent(intent: I)
+    protected abstract fun reduce(currentState: S, intent: I): S
 }

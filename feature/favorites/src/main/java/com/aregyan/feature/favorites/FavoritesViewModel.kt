@@ -37,7 +37,7 @@ class FavoritesViewModel @Inject constructor(
         }
     }
 
-    private fun reduce(
+    override fun reduce(
         currentState: LceUiState<FavoriteState>,
         intent: FavoritesIntent
     ): LceUiState<FavoriteState> = when (intent) {
