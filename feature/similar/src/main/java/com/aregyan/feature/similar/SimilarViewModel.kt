@@ -5,6 +5,7 @@ import com.aregyan.core.domain.Photo
 import com.aregyan.core.ui.base.BaseViewModel
 import com.aregyan.core.ui.base.LceUiState
 import com.aregyan.core.ui.base.RetryIntentMarker
+import com.aregyan.core.ui.base.SystemIntentMarker
 import com.aregyan.core.ui.base.UiIntent
 import com.aregyan.core.ui.base.updateSuccess
 import com.aregyan.feature.favorites.api.FavoritesUseCase
@@ -87,6 +88,6 @@ sealed class SimilarIntent : UiIntent {
     data class OnFavoriteClick(val photo: Photo) : SimilarIntent()
     data class OnPhotoClick(val photo: Photo?) : SimilarIntent()
     data class SimilarPhotosLoaded(val photos: List<Photo>) : SimilarIntent()
-    data class Error(val throwable: Throwable) : SimilarIntent()
+    data class Error(val throwable: Throwable) : SimilarIntent(), SystemIntentMarker
     object Retry : SimilarIntent(), RetryIntentMarker
 }

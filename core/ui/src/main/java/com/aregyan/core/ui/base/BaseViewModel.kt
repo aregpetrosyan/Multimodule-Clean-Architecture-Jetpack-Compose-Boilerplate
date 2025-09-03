@@ -13,6 +13,7 @@ interface UiState
 interface UiEvent
 
 interface RetryIntentMarker
+interface SystemIntentMarker
 
 abstract class BaseViewModel<I : UiIntent, S : UiState> : ViewModel() {
 
@@ -28,14 +29,22 @@ abstract class BaseViewModel<I : UiIntent, S : UiState> : ViewModel() {
         state = _state.asStateFlow()
     }
 
-    private var lastFailedIntent: I? = null
+    private var lastUserIntent: I? = null
 
     fun onIntent(intent: I) {
-        if (intent is RetryIntentMarker) {
-            lastFailedIntent?.let { handleIntent(it) }
-        } else {
-            lastFailedIntent = intent
-            handleIntent(intent)
+        when (intent) {
+            is RetryIntentMarker -> {
+                lastUserIntent?.let { handleIntent(it) }
+            }
+
+            is SystemIntentMarker -> {
+                handleIntent(intent)
+            }
+
+            else -> {
+                lastUserIntent = intent
+                handleIntent(intent)
+            }
         }
     }
 
