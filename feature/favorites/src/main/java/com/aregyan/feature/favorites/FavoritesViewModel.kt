@@ -7,6 +7,7 @@ import com.aregyan.core.ui.base.LceUiState
 import com.aregyan.core.ui.base.RetryIntentMarker
 import com.aregyan.core.ui.base.UiEvent
 import com.aregyan.core.ui.base.UiIntent
+import com.aregyan.core.ui.base.updateSuccess
 import com.aregyan.feature.favorites.api.FavoritesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -40,16 +41,16 @@ class FavoritesViewModel @Inject constructor(
         currentState: LceUiState<FavoriteState>,
         intent: FavoritesIntent
     ): LceUiState<FavoriteState> = when (intent) {
-        FavoritesIntent.LoadFavorites, FavoritesIntent.Retry -> LceUiState.Loading
+        FavoritesIntent.LoadFavorites, FavoritesIntent.Retry -> LceUiState.Loading()
 
         is FavoritesIntent.FavoritesLoaded ->
             if (intent.favorites.isEmpty()) LceUiState.Idle
             else LceUiState.Success(FavoriteState(intent.favorites.toList()))
 
         is FavoritesIntent.OnPhotoClick ->
-            (currentState as? LceUiState.Success)?.copy(
-                data = currentState.data.copy(selectedPhoto = intent.photo)
-            ) ?: currentState
+            currentState.updateSuccess { data ->
+                data.copy(selectedPhoto = intent.photo)
+            }
 
         else -> currentState
     }

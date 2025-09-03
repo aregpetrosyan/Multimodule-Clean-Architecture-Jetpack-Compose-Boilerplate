@@ -4,15 +4,19 @@ import androidx.compose.runtime.Immutable
 
 @Immutable
 sealed class LceUiState<out T> : UiState {
+
     object Idle : LceUiState<Nothing>()
 
-    object Loading : LceUiState<Nothing>()
+    data class Loading<out T>(
+        val previousData: T? = null
+    ) : LceUiState<T>()
 
-    @Immutable
-    data class Success<out T>(val data: T) : LceUiState<T>()
+    data class Success<out T>(
+        val data: T
+    ) : LceUiState<T>()
 
-    @Immutable
-    data class Error(
-        val throwable: Throwable
-    ) : LceUiState<Nothing>()
+    data class Error<out T>(
+        val throwable: Throwable,
+        val previousData: T? = null
+    ) : LceUiState<T>()
 }
