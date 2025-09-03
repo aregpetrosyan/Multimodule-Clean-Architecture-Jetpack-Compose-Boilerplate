@@ -30,10 +30,8 @@ class RandomViewModel @Inject constructor(
     }
 
     override fun handleIntent(intent: RandomIntent) {
-        // always reduce first (pure state update)
         _state.value = reduce(state.value, intent)
 
-        // then run side effects
         when (intent) {
             RandomIntent.LoadRandomPhoto -> loadRandomPhoto()
             is RandomIntent.OnFavoriteClick -> onFavoriteClick(intent.photo)
@@ -48,16 +46,13 @@ class RandomViewModel @Inject constructor(
         intent: RandomIntent
     ): LceUiState<Photo> = when (intent) {
         RandomIntent.LoadRandomPhoto ->
-            LceUiState.Loading(previousData = (currentState as? LceUiState.Success)?.data)
+            LceUiState.Loading()
 
         is RandomIntent.PhotoLoaded ->
             LceUiState.Success(intent.photo)
 
         is RandomIntent.Error ->
-            LceUiState.Error(
-                throwable = intent.throwable,
-                previousData = (currentState as? LceUiState.Success)?.data
-            )
+            LceUiState.Error(throwable = intent.throwable)
 
         else -> currentState
     }

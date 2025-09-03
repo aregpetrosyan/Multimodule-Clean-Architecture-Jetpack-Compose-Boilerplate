@@ -7,11 +7,10 @@ import com.aregyan.core.domain.Photo
 import com.aregyan.core.ui.base.BaseViewModel
 import com.aregyan.core.ui.base.LceUiState
 import com.aregyan.core.ui.base.RetryIntentMarker
+import com.aregyan.core.ui.base.SystemIntentMarker
 import com.aregyan.core.ui.base.UiEvent
 import com.aregyan.core.ui.base.UiIntent
-import com.aregyan.core.ui.base.setError
-import com.aregyan.core.ui.base.setLoading
-import com.aregyan.core.ui.base.setSuccess
+import com.aregyan.core.ui.base.updateSuccess
 import com.aregyan.feature.explore.domain.ExplorePhotosUseCase
 import com.aregyan.feature.favorites.api.FavoritesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -28,65 +27,71 @@ class ExploreViewModel @Inject constructor(
     private val analyticsTracker: AnalyticsTracker
 ) : BaseViewModel<ExploreIntent, LceUiState<ExploreState>>() {
 
+    init {
+        onIntent(ExploreIntent.LoadPhotos)
+    }
+
     override fun handleIntent(intent: ExploreIntent) {
+        _state.value = reduce(state.value, intent)
+
         when (intent) {
             ExploreIntent.LoadPhotos -> loadPhotos()
             is ExploreIntent.OnFavoriteClick -> onFavoriteClick(intent.photo)
             is ExploreIntent.OnSimilarClick -> onSimilarClick(intent.photo)
-            is ExploreIntent.OnPhotoClick -> onPhotoClick(intent.photo)
-            else -> { /* No action required */
-            }
+            is ExploreIntent.PhotosLoaded -> analyticsTracker.imagesLoaded()
+            is ExploreIntent.Error -> analyticsTracker.failure(intent.throwable)
+            else -> {}
         }
     }
 
     override fun reduce(
         currentState: LceUiState<ExploreState>,
         intent: ExploreIntent
-    ): LceUiState<ExploreState> {
-        TODO("Not yet implemented")
-    }
+    ): LceUiState<ExploreState> = when (intent) {
+        ExploreIntent.LoadPhotos ->
+            LceUiState.Loading()
 
-    init {
-        onIntent(ExploreIntent.LoadPhotos)
+        is ExploreIntent.PhotosLoaded ->
+            if (intent.photos.isEmpty()) LceUiState.Idle
+            else LceUiState.Success(ExploreState(intent.photos))
+
+        is ExploreIntent.Error ->
+            LceUiState.Error(intent.throwable)
+
+        is ExploreIntent.OnPhotoClick ->
+            currentState.updateSuccess { state ->
+                state.copy(selectedPhoto = intent.photo)
+            }
+
+        else -> currentState
     }
 
     private fun loadPhotos() {
         viewModelScope.launch {
-            _state.setLoading()
-
             combine(
                 explorePhotosUseCase(),
                 favoritesUseCase.observeFavorites()
             ) { photoDomainList, favorites ->
                 photoDomainList.map { photo ->
                     photo.map {
-                        it.copy(isFavorite = favorites.any { favorite -> favorite.imageUrl == it.imageUrl })
+                        it.copy(
+                            isFavorite = favorites.any { fav -> fav.imageUrl == it.imageUrl }
+                        )
                     }
                 }
-            }
-                .onEach { result ->
-                    result.onSuccess { photos ->
-                        _state.setSuccess(ExploreState(photos))
-                        analyticsTracker.imagesLoaded()
-                    }.onFailure { throwable ->
-                        _state.setError(throwable)
-                        analyticsTracker.failure(throwable)
-                    }
+            }.onEach { result ->
+                result.onSuccess { photos ->
+                    onIntent(ExploreIntent.PhotosLoaded(photos))
+                }.onFailure { throwable ->
+                    onIntent(ExploreIntent.Error(throwable))
                 }
-                .collect()
+            }.collect()
         }
     }
 
     private fun onFavoriteClick(photo: Photo) {
         viewModelScope.launch {
             favoritesUseCase.toggleFavorite(photo)
-        }
-    }
-
-    private fun onPhotoClick(photo: Photo?) {
-        val currentState = state.value
-        if (currentState is LceUiState.Success) {
-            _state.setSuccess(currentState.data.copy(selectedPhoto = photo))
         }
     }
 
@@ -97,11 +102,14 @@ class ExploreViewModel @Inject constructor(
     }
 }
 
+
 sealed class ExploreIntent : UiIntent {
     object LoadPhotos : ExploreIntent()
     data class OnFavoriteClick(val photo: Photo) : ExploreIntent()
     data class OnSimilarClick(val photo: Photo) : ExploreIntent()
     data class OnPhotoClick(val photo: Photo?) : ExploreIntent()
+    data class PhotosLoaded(val photos: List<Photo>) : ExploreIntent()
+    data class Error(val throwable: Throwable) : ExploreIntent(), SystemIntentMarker
     object Retry : ExploreIntent(), RetryIntentMarker
 }
 
