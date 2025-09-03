@@ -6,9 +6,7 @@ import com.aregyan.core.ui.base.BaseViewModel
 import com.aregyan.core.ui.base.LceUiState
 import com.aregyan.core.ui.base.RetryIntentMarker
 import com.aregyan.core.ui.base.UiIntent
-import com.aregyan.core.ui.base.setError
-import com.aregyan.core.ui.base.setLoading
-import com.aregyan.core.ui.base.setSuccess
+import com.aregyan.core.ui.base.updateSuccess
 import com.aregyan.feature.favorites.api.FavoritesUseCase
 import com.aregyan.feature.similar.domain.SimilarPhotosUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -23,26 +21,44 @@ class SimilarViewModel @Inject constructor(
     private val similarPhotosUseCase: SimilarPhotosUseCase,
     private val favoritesUseCase: FavoritesUseCase,
 ) : BaseViewModel<SimilarIntent, LceUiState<SimilarState>>() {
+
     override fun createInitialState() = LceUiState.Idle
 
     override fun handleIntent(intent: SimilarIntent) {
+        _state.value = reduce(state.value, intent)
+
         when (intent) {
             is SimilarIntent.LoadSimilarPhotos -> loadSimilarPhotos(intent.query)
             is SimilarIntent.OnFavoriteClick -> onFavoriteClick(intent.photo)
-            is SimilarIntent.OnPhotoClick -> onPhotoClick(intent.photo)
-            else -> { /* No action required */
-            }
+            else -> {}
         }
     }
 
+    private fun reduce(
+        currentState: LceUiState<SimilarState>,
+        intent: SimilarIntent
+    ): LceUiState<SimilarState> = when (intent) {
+        is SimilarIntent.LoadSimilarPhotos -> LceUiState.Loading()
+
+        is SimilarIntent.SimilarPhotosLoaded ->
+            LceUiState.Success(SimilarState(intent.photos))
+
+        is SimilarIntent.OnPhotoClick -> currentState.updateSuccess { data ->
+            data.copy(selectedPhoto = intent.photo)
+        }
+
+        is SimilarIntent.Error -> LceUiState.Error(intent.throwable)
+
+        else -> currentState
+    }
+
     private fun loadSimilarPhotos(query: String) {
-        _state.setLoading()
         viewModelScope.launch {
             combine(
                 similarPhotosUseCase.invoke(query),
                 favoritesUseCase.observeFavorites()
-            ) { photoDomain, favorites ->
-                photoDomain.map { photo ->
+            ) { photosDomain, favorites ->
+                photosDomain.map { photo ->
                     photo.map {
                         it.copy(isFavorite = favorites.any { favorite -> favorite.imageUrl == it.imageUrl })
                     }
@@ -50,9 +66,9 @@ class SimilarViewModel @Inject constructor(
             }
                 .onEach { result ->
                     result.onSuccess { photos ->
-                        _state.setSuccess(SimilarState(photos))
+                        onIntent(SimilarIntent.SimilarPhotosLoaded(photos))
                     }.onFailure { throwable ->
-                        _state.setError(throwable)
+                        onIntent(SimilarIntent.Error(throwable))
                     }
                 }
                 .collect()
@@ -64,18 +80,13 @@ class SimilarViewModel @Inject constructor(
             favoritesUseCase.toggleFavorite(photo)
         }
     }
-
-    private fun onPhotoClick(photo: Photo?) {
-        val currentState = state.value
-        if (currentState is LceUiState.Success) {
-            _state.setSuccess(currentState.data.copy(selectedPhoto = photo))
-        }
-    }
 }
 
 sealed class SimilarIntent : UiIntent {
     data class LoadSimilarPhotos(val query: String) : SimilarIntent()
     data class OnFavoriteClick(val photo: Photo) : SimilarIntent()
     data class OnPhotoClick(val photo: Photo?) : SimilarIntent()
+    data class SimilarPhotosLoaded(val photos: List<Photo>) : SimilarIntent()
+    data class Error(val throwable: Throwable) : SimilarIntent()
     object Retry : SimilarIntent(), RetryIntentMarker
 }
