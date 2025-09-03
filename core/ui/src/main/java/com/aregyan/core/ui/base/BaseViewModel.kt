@@ -17,30 +17,19 @@ interface SystemIntentMarker
 
 abstract class BaseViewModel<I : UiIntent, S : UiState> : ViewModel() {
 
-    protected var _state: MutableStateFlow<S>
-    var state: StateFlow<S>
-        private set
+    protected val _state: MutableStateFlow<S> =
+        MutableStateFlow(LceUiState.Idle as S)
+    val state: StateFlow<S> = _state.asStateFlow()
 
     protected val _navigationEvents = MutableSharedFlow<UiEvent>()
     val navigationEvents: SharedFlow<UiEvent> = _navigationEvents.asSharedFlow()
-
-    init {
-        _state = MutableStateFlow(createInitialState())
-        state = _state.asStateFlow()
-    }
 
     private var lastUserIntent: I? = null
 
     fun onIntent(intent: I) {
         when (intent) {
-            is RetryIntentMarker -> {
-                lastUserIntent?.let { handleIntent(it) }
-            }
-
-            is SystemIntentMarker -> {
-                handleIntent(intent)
-            }
-
+            is RetryIntentMarker -> lastUserIntent?.let { handleIntent(it) }
+            is SystemIntentMarker -> handleIntent(intent)
             else -> {
                 lastUserIntent = intent
                 handleIntent(intent)
@@ -48,7 +37,6 @@ abstract class BaseViewModel<I : UiIntent, S : UiState> : ViewModel() {
         }
     }
 
-    protected abstract fun createInitialState(): S
     protected abstract fun handleIntent(intent: I)
     protected abstract fun reduce(currentState: S, intent: I): S
 }

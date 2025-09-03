@@ -19,8 +19,6 @@ class FavoritesViewModel @Inject constructor(
     private val favoritesUseCase: FavoritesUseCase
 ) : BaseViewModel<FavoritesIntent, LceUiState<FavoriteState>>() {
 
-    override fun createInitialState() = LceUiState.Idle
-
     init {
         onIntent(FavoritesIntent.LoadFavorites)
     }

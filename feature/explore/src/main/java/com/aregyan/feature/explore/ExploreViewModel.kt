@@ -28,8 +28,6 @@ class ExploreViewModel @Inject constructor(
     private val analyticsTracker: AnalyticsTracker
 ) : BaseViewModel<ExploreIntent, LceUiState<ExploreState>>() {
 
-    override fun createInitialState() = LceUiState.Idle
-
     override fun handleIntent(intent: ExploreIntent) {
         when (intent) {
             ExploreIntent.LoadPhotos -> loadPhotos()

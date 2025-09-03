@@ -27,8 +27,6 @@ class RandomViewModel @Inject constructor(
     private val analyticsTracker: AnalyticsTracker
 ) : BaseViewModel<RandomIntent, LceUiState<Photo>>() {
 
-    override fun createInitialState() = LceUiState.Idle
-
     override fun handleIntent(intent: RandomIntent) {
         when (intent) {
             RandomIntent.LoadRandomPhoto -> loadRandomPhoto()
