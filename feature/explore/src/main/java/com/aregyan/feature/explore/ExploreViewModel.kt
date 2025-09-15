@@ -5,7 +5,7 @@ import com.aregyan.core.analytics.AnalyticsTracker
 import com.aregyan.core.analytics.failure
 import com.aregyan.core.domain.Photo
 import com.aregyan.core.ui.base.BaseViewModel
-import com.aregyan.core.ui.base.LceUiState
+import com.aregyan.core.ui.base.LceUiStateOld
 import com.aregyan.core.ui.base.RetryIntentMarker
 import com.aregyan.core.ui.base.SystemIntentMarker
 import com.aregyan.core.ui.base.UiEvent
@@ -25,7 +25,7 @@ class ExploreViewModel @Inject constructor(
     private val explorePhotosUseCase: ExplorePhotosUseCase,
     private val favoritesUseCase: FavoritesUseCase,
     private val analyticsTracker: AnalyticsTracker
-) : BaseViewModel<ExploreIntent, LceUiState<ExploreState>>() {
+) : BaseViewModel<ExploreIntent, LceUiStateOld<ExploreState>>() {
 
     init {
         onIntent(ExploreIntent.LoadPhotos)
@@ -45,18 +45,18 @@ class ExploreViewModel @Inject constructor(
     }
 
     override fun reduce(
-        currentState: LceUiState<ExploreState>,
+        currentState: LceUiStateOld<ExploreState>,
         intent: ExploreIntent
-    ): LceUiState<ExploreState> = when (intent) {
+    ): LceUiStateOld<ExploreState> = when (intent) {
         ExploreIntent.LoadPhotos ->
-            LceUiState.Loading()
+            LceUiStateOld.Loading()
 
         is ExploreIntent.PhotosLoaded ->
-            if (intent.photos.isEmpty()) LceUiState.Idle
-            else LceUiState.Success(ExploreState(intent.photos))
+            if (intent.photos.isEmpty()) LceUiStateOld.Idle
+            else LceUiStateOld.Success(ExploreState(intent.photos))
 
         is ExploreIntent.Error ->
-            LceUiState.Error(intent.throwable)
+            LceUiStateOld.Error(intent.throwable)
 
         is ExploreIntent.OnPhotoClick ->
             currentState.updateSuccess { state ->

@@ -3,7 +3,7 @@ package com.aregyan.feature.similar
 import androidx.lifecycle.viewModelScope
 import com.aregyan.core.domain.Photo
 import com.aregyan.core.ui.base.BaseViewModel
-import com.aregyan.core.ui.base.LceUiState
+import com.aregyan.core.ui.base.LceUiStateOld
 import com.aregyan.core.ui.base.RetryIntentMarker
 import com.aregyan.core.ui.base.SystemIntentMarker
 import com.aregyan.core.ui.base.UiIntent
@@ -21,7 +21,7 @@ import javax.inject.Inject
 class SimilarViewModel @Inject constructor(
     private val similarPhotosUseCase: SimilarPhotosUseCase,
     private val favoritesUseCase: FavoritesUseCase,
-) : BaseViewModel<SimilarIntent, LceUiState<SimilarState>>() {
+) : BaseViewModel<SimilarIntent, LceUiStateOld<SimilarState>>() {
 
     override fun handleIntent(intent: SimilarIntent) {
         _state.value = reduce(state.value, intent)
@@ -34,19 +34,19 @@ class SimilarViewModel @Inject constructor(
     }
 
     override fun reduce(
-        currentState: LceUiState<SimilarState>,
+        currentState: LceUiStateOld<SimilarState>,
         intent: SimilarIntent
-    ): LceUiState<SimilarState> = when (intent) {
-        is SimilarIntent.LoadSimilarPhotos -> LceUiState.Loading()
+    ): LceUiStateOld<SimilarState> = when (intent) {
+        is SimilarIntent.LoadSimilarPhotos -> LceUiStateOld.Loading()
 
         is SimilarIntent.SimilarPhotosLoaded ->
-            LceUiState.Success(SimilarState(intent.photos))
+            LceUiStateOld.Success(SimilarState(intent.photos))
 
         is SimilarIntent.OnPhotoClick -> currentState.updateSuccess { data ->
             data.copy(selectedPhoto = intent.photo)
         }
 
-        is SimilarIntent.Error -> LceUiState.Error(intent.throwable)
+        is SimilarIntent.Error -> LceUiStateOld.Error(intent.throwable)
 
         else -> currentState
     }

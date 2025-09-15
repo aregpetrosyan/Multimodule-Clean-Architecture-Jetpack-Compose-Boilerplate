@@ -28,7 +28,7 @@ abstract class BaseViewModel<I : UiIntent, S : UiState> : ViewModel() {
      * Initialized with a default Idle state.
      */
     protected val _state: MutableStateFlow<S> =
-        MutableStateFlow(LceUiState.Idle as S) // unchecked cast; safe if all states are LceUiState
+        MutableStateFlow(LceUiStateOld.Idle as S) // unchecked cast; safe if all states are LceUiState
 
     /**
      * Public read-only state flow for observing state in the UI.

@@ -4,32 +4,32 @@ import kotlinx.coroutines.flow.MutableStateFlow
 
 // This extension helps update a MutableStateFlow of LceUiState
 // It handles the type safety when setting Loading or Error states.
-fun <T> MutableStateFlow<LceUiState<T>>.setIdle() {
-    value = LceUiState.Idle
+fun <T> MutableStateFlow<LceUiStateOld<T>>.setIdle() {
+    value = LceUiStateOld.Idle
 }
 
-fun <T> MutableStateFlow<LceUiState<T>>.setLoading() {
-    val lastData = (value as? LceUiState.Success)?.data
-    value = LceUiState.Loading(previousData = lastData)
+fun <T> MutableStateFlow<LceUiStateOld<T>>.setLoading() {
+    val lastData = (value as? LceUiStateOld.Success)?.data
+    value = LceUiStateOld.Loading(previousData = lastData)
 }
 
-fun <T> MutableStateFlow<LceUiState<T>>.setSuccess(data: T) {
-    value = LceUiState.Success(data)
+fun <T> MutableStateFlow<LceUiStateOld<T>>.setSuccess(data: T) {
+    value = LceUiStateOld.Success(data)
 }
 
-fun <T> MutableStateFlow<LceUiState<T>>.setError(throwable: Throwable) {
-    val lastData = (value as? LceUiState.Success)?.data
-    value = LceUiState.Error(
+fun <T> MutableStateFlow<LceUiStateOld<T>>.setError(throwable: Throwable) {
+    val lastData = (value as? LceUiStateOld.Success)?.data
+    value = LceUiStateOld.Error(
         throwable = throwable,
         previousData = lastData
     )
 }
 
-inline fun <T> LceUiState<T>.updateSuccess(
+inline fun <T> LceUiStateOld<T>.updateSuccess(
     transform: (T) -> T
-): LceUiState<T> {
+): LceUiStateOld<T> {
     return when (this) {
-        is LceUiState.Success -> this.copy(data = transform(this.data))
+        is LceUiStateOld.Success -> this.copy(data = transform(this.data))
         else -> this
     }
 }

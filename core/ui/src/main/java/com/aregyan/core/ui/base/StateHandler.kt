@@ -5,7 +5,7 @@ import androidx.compose.ui.Modifier
 
 @Composable
 fun <T> StateHandler(
-    state: LceUiState<T>,
+    state: LceUiStateOld<T>,
     modifier: Modifier = Modifier,
     onRetry: (() -> Unit)? = null,
     idleContent: @Composable () -> Unit = {},
@@ -21,19 +21,19 @@ fun <T> StateHandler(
     successContent: @Composable (T) -> Unit,
 ) {
     when (state) {
-        is LceUiState.Loading -> {
+        is LceUiStateOld.Loading -> {
             loadingContent(state.previousData)
         }
 
-        is LceUiState.Error -> {
+        is LceUiStateOld.Error -> {
             errorContent(state.throwable, state.previousData)
         }
 
-        is LceUiState.Success -> {
+        is LceUiStateOld.Success -> {
             successContent(state.data)
         }
 
-        is LceUiState.Idle -> {
+        is LceUiStateOld.Idle -> {
             idleContent()
         }
     }
