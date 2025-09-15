@@ -2,8 +2,8 @@ package com.aregyan.feature.similar
 
 import androidx.lifecycle.viewModelScope
 import com.aregyan.core.domain.Photo
-import com.aregyan.core.ui.base.BaseViewModelOld
-import com.aregyan.core.ui.base.LceUiStateOld
+import com.aregyan.core.ui.base.BaseViewModel
+import com.aregyan.core.ui.base.LceUiState
 import com.aregyan.core.ui.base.RetryIntentMarker
 import com.aregyan.core.ui.base.SystemIntentMarker
 import com.aregyan.core.ui.base.UiIntent
@@ -21,7 +21,7 @@ import javax.inject.Inject
 class SimilarViewModel @Inject constructor(
     private val similarPhotosUseCase: SimilarPhotosUseCase,
     private val favoritesUseCase: FavoritesUseCase,
-) : BaseViewModelOld<SimilarIntent, LceUiStateOld<SimilarState>>() {
+) : BaseViewModel<SimilarIntent, LceUiState<SimilarState>>() {
 
     override fun handleIntent(intent: SimilarIntent) {
         _state.value = reduce(state.value, intent)
@@ -34,19 +34,21 @@ class SimilarViewModel @Inject constructor(
     }
 
     override fun reduce(
-        currentState: LceUiStateOld<SimilarState>,
+        currentState: LceUiState<SimilarState>,
         intent: SimilarIntent
-    ): LceUiStateOld<SimilarState> = when (intent) {
-        is SimilarIntent.LoadSimilarPhotos -> LceUiStateOld.Loading()
+    ): LceUiState<SimilarState> = when (intent) {
+        is SimilarIntent.LoadSimilarPhotos -> LceUiState.loading()
 
         is SimilarIntent.SimilarPhotosLoaded ->
-            LceUiStateOld.Success(SimilarState(intent.photos))
+            LceUiState.success(SimilarState(intent.photos))
 
-        is SimilarIntent.OnPhotoClick -> currentState.updateSuccess { data ->
-            data.copy(selectedPhoto = intent.photo)
-        }
+        is SimilarIntent.OnPhotoClick ->
+            currentState.updateSuccess { data ->
+                data.copy(selectedPhoto = intent.photo)
+            }
 
-        is SimilarIntent.Error -> LceUiStateOld.Error(intent.throwable)
+        is SimilarIntent.Error ->
+            LceUiState.error(intent.throwable)
 
         else -> currentState
     }
@@ -54,12 +56,12 @@ class SimilarViewModel @Inject constructor(
     private fun loadSimilarPhotos(query: String) {
         viewModelScope.launch {
             combine(
-                similarPhotosUseCase.invoke(query),
+                similarPhotosUseCase(query),
                 favoritesUseCase.observeFavorites()
             ) { photosDomain, favorites ->
                 photosDomain.map { photo ->
                     photo.map {
-                        it.copy(isFavorite = favorites.any { favorite -> favorite.imageUrl == it.imageUrl })
+                        it.copy(isFavorite = favorites.any { fav -> fav.imageUrl == it.imageUrl })
                     }
                 }
             }

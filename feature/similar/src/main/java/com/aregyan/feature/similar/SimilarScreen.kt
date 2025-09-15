@@ -6,7 +6,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.aregyan.core.domain.Photo
-import com.aregyan.core.ui.base.StateHandlerOld
+import com.aregyan.core.ui.base.StateHandler
 import com.aregyan.core.ui.components.photoGrid.PhotoCardMode
 import com.aregyan.core.ui.components.photoGrid.PhotoGridUiAction
 import com.aregyan.core.ui.components.photoGrid.PhotoGridWithImageViewer
@@ -22,7 +22,7 @@ fun SimilarScreen(
         viewModel.onIntent(SimilarIntent.LoadSimilarPhotos(photo.description.orEmpty()))
     }
 
-    StateHandlerOld(
+    StateHandler(
         state = state,
         onRetry = { viewModel.onIntent(SimilarIntent.Retry) }
     ) { similarState ->

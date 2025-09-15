@@ -4,8 +4,8 @@ import androidx.lifecycle.viewModelScope
 import com.aregyan.core.analytics.AnalyticsTracker
 import com.aregyan.core.analytics.failure
 import com.aregyan.core.domain.Photo
-import com.aregyan.core.ui.base.BaseViewModelOld
-import com.aregyan.core.ui.base.LceUiStateOld
+import com.aregyan.core.ui.base.BaseViewModel
+import com.aregyan.core.ui.base.LceUiState
 import com.aregyan.core.ui.base.RetryIntentMarker
 import com.aregyan.core.ui.base.SystemIntentMarker
 import com.aregyan.core.ui.base.UiIntent
@@ -23,7 +23,7 @@ class RandomViewModel @Inject constructor(
     private val randomPhotoUseCase: RandomPhotoUseCase,
     private val favoritesUseCase: FavoritesUseCase,
     private val analyticsTracker: AnalyticsTracker
-) : BaseViewModelOld<RandomIntent, LceUiStateOld<Photo>>() {
+) : BaseViewModel<RandomIntent, LceUiState<Photo>>() {
 
     init {
         onIntent(RandomIntent.LoadRandomPhoto)
@@ -42,17 +42,17 @@ class RandomViewModel @Inject constructor(
     }
 
     override fun reduce(
-        currentState: LceUiStateOld<Photo>,
+        currentState: LceUiState<Photo>,
         intent: RandomIntent
-    ): LceUiStateOld<Photo> = when (intent) {
+    ): LceUiState<Photo> = when (intent) {
         RandomIntent.LoadRandomPhoto ->
-            LceUiStateOld.Loading()
+            LceUiState.loading()
 
         is RandomIntent.PhotoLoaded ->
-            LceUiStateOld.Success(intent.photo)
+            LceUiState.success(intent.photo)
 
         is RandomIntent.Error ->
-            LceUiStateOld.Error(throwable = intent.throwable)
+            LceUiState.error(intent.throwable)
 
         else -> currentState
     }
