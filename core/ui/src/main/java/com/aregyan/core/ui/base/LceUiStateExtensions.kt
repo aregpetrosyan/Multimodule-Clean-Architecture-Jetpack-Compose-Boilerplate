@@ -2,34 +2,29 @@ package com.aregyan.core.ui.base
 
 import kotlinx.coroutines.flow.MutableStateFlow
 
-// This extension helps update a MutableStateFlow of LceUiState
-// It handles the type safety when setting Loading or Error states.
-fun <T> MutableStateFlow<LceUiStateOld<T>>.setIdle() {
-    value = LceUiStateOld.Idle
+/** Extension helpers for MutableStateFlow of LceUiState **/
+
+fun <T> MutableStateFlow<LceUiState<T>>.setIdle() {
+    value = LceUiState.idle()
 }
 
-fun <T> MutableStateFlow<LceUiStateOld<T>>.setLoading() {
-    val lastData = (value as? LceUiStateOld.Success)?.data
-    value = LceUiStateOld.Loading(previousData = lastData)
+fun <T> MutableStateFlow<LceUiState<T>>.setLoading() {
+    value = LceUiState.loading()
 }
 
-fun <T> MutableStateFlow<LceUiStateOld<T>>.setSuccess(data: T) {
-    value = LceUiStateOld.Success(data)
+fun <T> MutableStateFlow<LceUiState<T>>.setSuccess(data: T) {
+    value = LceUiState.success(data)
 }
 
-fun <T> MutableStateFlow<LceUiStateOld<T>>.setError(throwable: Throwable) {
-    val lastData = (value as? LceUiStateOld.Success)?.data
-    value = LceUiStateOld.Error(
-        throwable = throwable,
-        previousData = lastData
-    )
+fun <T> MutableStateFlow<LceUiState<T>>.setError(throwable: Throwable) {
+    value = LceUiState.error(throwable)
 }
 
-inline fun <T> LceUiStateOld<T>.updateSuccess(
+/** Safely update the data only if the state is Success */
+inline fun <T> LceUiState<T>.updateSuccess(
     transform: (T) -> T
-): LceUiStateOld<T> {
-    return when (this) {
-        is LceUiStateOld.Success -> this.copy(data = transform(this.data))
-        else -> this
-    }
+): LceUiState<T> = if (isSuccess && data != null) {
+    LceUiState.success(transform(data))
+} else {
+    this
 }

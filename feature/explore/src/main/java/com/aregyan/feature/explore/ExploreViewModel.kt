@@ -10,6 +10,7 @@ import com.aregyan.core.ui.base.RetryIntentMarker
 import com.aregyan.core.ui.base.SystemIntentMarker
 import com.aregyan.core.ui.base.UiEvent
 import com.aregyan.core.ui.base.UiIntent
+import com.aregyan.core.ui.base.updateSuccess
 import com.aregyan.feature.explore.domain.ExplorePhotosUseCase
 import com.aregyan.feature.favorites.api.FavoritesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -58,11 +59,8 @@ class ExploreViewModel @Inject constructor(
             LceUiState.error(intent.throwable)
 
         is ExploreIntent.OnPhotoClick -> {
-            val state = currentState.data
-            if (state != null) {
-                LceUiState.success(state.copy(selectedPhoto = intent.photo))
-            } else {
-                currentState
+            currentState.updateSuccess { state ->
+                state.copy(selectedPhoto = intent.photo)
             }
         }
 
