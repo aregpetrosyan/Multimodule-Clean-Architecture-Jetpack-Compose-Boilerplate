@@ -2,8 +2,8 @@ package com.aregyan.feature.favorites
 
 import androidx.lifecycle.viewModelScope
 import com.aregyan.core.domain.Photo
-import com.aregyan.core.ui.base.BaseViewModelOld
-import com.aregyan.core.ui.base.LceUiStateOld
+import com.aregyan.core.ui.base.BaseViewModel
+import com.aregyan.core.ui.base.LceUiState
 import com.aregyan.core.ui.base.RetryIntentMarker
 import com.aregyan.core.ui.base.UiEvent
 import com.aregyan.core.ui.base.UiIntent
@@ -17,7 +17,7 @@ import javax.inject.Inject
 @HiltViewModel
 class FavoritesViewModel @Inject constructor(
     private val favoritesUseCase: FavoritesUseCase
-) : BaseViewModelOld<FavoritesIntent, LceUiStateOld<FavoriteState>>() {
+) : BaseViewModel<FavoritesIntent, LceUiState<FavoriteState>>() {
 
     init {
         onIntent(FavoritesIntent.LoadFavorites)
@@ -36,14 +36,15 @@ class FavoritesViewModel @Inject constructor(
     }
 
     override fun reduce(
-        currentState: LceUiStateOld<FavoriteState>,
+        currentState: LceUiState<FavoriteState>,
         intent: FavoritesIntent
-    ): LceUiStateOld<FavoriteState> = when (intent) {
-        FavoritesIntent.LoadFavorites, FavoritesIntent.Retry -> LceUiStateOld.Loading()
+    ): LceUiState<FavoriteState> = when (intent) {
+        FavoritesIntent.LoadFavorites, FavoritesIntent.Retry ->
+            LceUiState.loading()
 
         is FavoritesIntent.FavoritesLoaded ->
-            if (intent.favorites.isEmpty()) LceUiStateOld.Idle
-            else LceUiStateOld.Success(FavoriteState(intent.favorites.toList()))
+            if (intent.favorites.isEmpty()) LceUiState.idle()
+            else LceUiState.success(FavoriteState(intent.favorites.toList()))
 
         is FavoritesIntent.OnPhotoClick ->
             currentState.updateSuccess { data ->

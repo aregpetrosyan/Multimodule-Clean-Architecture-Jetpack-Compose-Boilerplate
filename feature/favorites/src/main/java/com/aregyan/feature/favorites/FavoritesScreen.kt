@@ -12,7 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.aregyan.core.domain.Photo
-import com.aregyan.core.ui.base.StateHandlerOld
+import com.aregyan.core.ui.base.StateHandler
 import com.aregyan.core.ui.components.photoGrid.PhotoGridUiAction
 import com.aregyan.core.ui.components.photoGrid.PhotoGridWithImageViewer
 import kotlinx.coroutines.flow.collectLatest
@@ -32,7 +32,7 @@ fun FavoritesScreen(
         }
     }
 
-    StateHandlerOld(
+    StateHandler(
         state = state,
         onRetry = { viewModel.onIntent(FavoritesIntent.Retry) },
         idleContent = {
