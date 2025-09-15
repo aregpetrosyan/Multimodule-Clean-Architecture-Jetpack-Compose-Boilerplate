@@ -4,7 +4,7 @@ import androidx.lifecycle.viewModelScope
 import com.aregyan.core.analytics.AnalyticsTracker
 import com.aregyan.core.analytics.failure
 import com.aregyan.core.domain.Photo
-import com.aregyan.core.ui.base.BaseViewModel
+import com.aregyan.core.ui.base.BaseViewModelOld
 import com.aregyan.core.ui.base.LceUiStateOld
 import com.aregyan.core.ui.base.RetryIntentMarker
 import com.aregyan.core.ui.base.SystemIntentMarker
@@ -23,7 +23,7 @@ class RandomViewModel @Inject constructor(
     private val randomPhotoUseCase: RandomPhotoUseCase,
     private val favoritesUseCase: FavoritesUseCase,
     private val analyticsTracker: AnalyticsTracker
-) : BaseViewModel<RandomIntent, LceUiStateOld<Photo>>() {
+) : BaseViewModelOld<RandomIntent, LceUiStateOld<Photo>>() {
 
     init {
         onIntent(RandomIntent.LoadRandomPhoto)

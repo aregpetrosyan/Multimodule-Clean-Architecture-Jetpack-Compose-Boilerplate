@@ -16,7 +16,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
-import com.aregyan.core.ui.base.StateHandler
+import com.aregyan.core.ui.base.StateHandlerOld
 import com.aregyan.feature_random.R
 
 @Composable
@@ -25,7 +25,7 @@ fun RandomScreen(
 ) {
     val state by viewModel.state.collectAsState()
 
-    StateHandler(
+    StateHandlerOld(
         state = state,
         onRetry = { viewModel.onIntent(RandomIntent.Retry) }
     ) { photo ->

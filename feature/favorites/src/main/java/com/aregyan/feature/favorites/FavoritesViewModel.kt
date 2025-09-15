@@ -2,7 +2,7 @@ package com.aregyan.feature.favorites
 
 import androidx.lifecycle.viewModelScope
 import com.aregyan.core.domain.Photo
-import com.aregyan.core.ui.base.BaseViewModel
+import com.aregyan.core.ui.base.BaseViewModelOld
 import com.aregyan.core.ui.base.LceUiStateOld
 import com.aregyan.core.ui.base.RetryIntentMarker
 import com.aregyan.core.ui.base.UiEvent
@@ -17,7 +17,7 @@ import javax.inject.Inject
 @HiltViewModel
 class FavoritesViewModel @Inject constructor(
     private val favoritesUseCase: FavoritesUseCase
-) : BaseViewModel<FavoritesIntent, LceUiStateOld<FavoriteState>>() {
+) : BaseViewModelOld<FavoritesIntent, LceUiStateOld<FavoriteState>>() {
 
     init {
         onIntent(FavoritesIntent.LoadFavorites)

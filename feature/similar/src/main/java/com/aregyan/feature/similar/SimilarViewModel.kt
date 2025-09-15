@@ -2,7 +2,7 @@ package com.aregyan.feature.similar
 
 import androidx.lifecycle.viewModelScope
 import com.aregyan.core.domain.Photo
-import com.aregyan.core.ui.base.BaseViewModel
+import com.aregyan.core.ui.base.BaseViewModelOld
 import com.aregyan.core.ui.base.LceUiStateOld
 import com.aregyan.core.ui.base.RetryIntentMarker
 import com.aregyan.core.ui.base.SystemIntentMarker
@@ -21,7 +21,7 @@ import javax.inject.Inject
 class SimilarViewModel @Inject constructor(
     private val similarPhotosUseCase: SimilarPhotosUseCase,
     private val favoritesUseCase: FavoritesUseCase,
-) : BaseViewModel<SimilarIntent, LceUiStateOld<SimilarState>>() {
+) : BaseViewModelOld<SimilarIntent, LceUiStateOld<SimilarState>>() {
 
     override fun handleIntent(intent: SimilarIntent) {
         _state.value = reduce(state.value, intent)

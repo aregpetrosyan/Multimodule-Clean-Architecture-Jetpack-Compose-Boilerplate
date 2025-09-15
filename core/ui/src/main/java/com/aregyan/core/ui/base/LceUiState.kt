@@ -20,13 +20,13 @@ data class LceUiState<out T> private constructor(
         fun <T> idle(): LceUiState<T> =
             LceUiState(type = Type.Idle)
 
-        fun <T> loading(previousData: T? = null): LceUiState<T> =
-            LceUiState(data = previousData, type = Type.Loading)
+        fun <T> loading(): LceUiState<T> =
+            LceUiState(type = Type.Loading)
 
         fun <T> success(data: T): LceUiState<T> =
             LceUiState(data = data, type = Type.Success)
 
-        fun <T> error(throwable: Throwable, previousData: T? = null): LceUiState<T> =
-            LceUiState(data = previousData, error = throwable, type = Type.Error)
+        fun <T> error(throwable: Throwable): LceUiState<T> =
+            LceUiState(error = throwable, type = Type.Error)
     }
 }

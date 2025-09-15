@@ -5,12 +5,11 @@ import com.aregyan.core.analytics.AnalyticsTracker
 import com.aregyan.core.analytics.failure
 import com.aregyan.core.domain.Photo
 import com.aregyan.core.ui.base.BaseViewModel
-import com.aregyan.core.ui.base.LceUiStateOld
+import com.aregyan.core.ui.base.LceUiState
 import com.aregyan.core.ui.base.RetryIntentMarker
 import com.aregyan.core.ui.base.SystemIntentMarker
 import com.aregyan.core.ui.base.UiEvent
 import com.aregyan.core.ui.base.UiIntent
-import com.aregyan.core.ui.base.updateSuccess
 import com.aregyan.feature.explore.domain.ExplorePhotosUseCase
 import com.aregyan.feature.favorites.api.FavoritesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -25,7 +24,7 @@ class ExploreViewModel @Inject constructor(
     private val explorePhotosUseCase: ExplorePhotosUseCase,
     private val favoritesUseCase: FavoritesUseCase,
     private val analyticsTracker: AnalyticsTracker
-) : BaseViewModel<ExploreIntent, LceUiStateOld<ExploreState>>() {
+) : BaseViewModel<ExploreIntent, LceUiState<ExploreState>>() {
 
     init {
         onIntent(ExploreIntent.LoadPhotos)
@@ -45,23 +44,27 @@ class ExploreViewModel @Inject constructor(
     }
 
     override fun reduce(
-        currentState: LceUiStateOld<ExploreState>,
+        currentState: LceUiState<ExploreState>,
         intent: ExploreIntent
-    ): LceUiStateOld<ExploreState> = when (intent) {
+    ): LceUiState<ExploreState> = when (intent) {
         ExploreIntent.LoadPhotos ->
-            LceUiStateOld.Loading()
+            LceUiState.loading()
 
         is ExploreIntent.PhotosLoaded ->
-            if (intent.photos.isEmpty()) LceUiStateOld.Idle
-            else LceUiStateOld.Success(ExploreState(intent.photos))
+            if (intent.photos.isEmpty()) LceUiState.idle()
+            else LceUiState.success(ExploreState(intent.photos))
 
         is ExploreIntent.Error ->
-            LceUiStateOld.Error(intent.throwable)
+            LceUiState.error(intent.throwable)
 
-        is ExploreIntent.OnPhotoClick ->
-            currentState.updateSuccess { state ->
-                state.copy(selectedPhoto = intent.photo)
+        is ExploreIntent.OnPhotoClick -> {
+            val state = currentState.data
+            if (state != null) {
+                LceUiState.success(state.copy(selectedPhoto = intent.photo))
+            } else {
+                currentState
             }
+        }
 
         else -> currentState
     }

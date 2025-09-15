@@ -4,15 +4,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 
 @Composable
-fun <T> StateHandler(
-    state: LceUiState<T>,
+fun <T> StateHandlerOld(
+    state: LceUiStateOld<T>,
     modifier: Modifier = Modifier,
     onRetry: (() -> Unit)? = null,
     idleContent: @Composable () -> Unit = {},
-    loadingContent: @Composable () -> Unit = {
+    loadingContent: @Composable (previousData: T?) -> Unit = {
         LoadingScreen(modifier)
     },
-    errorContent: @Composable (throwable: Throwable) -> Unit = { throwable ->
+    errorContent: @Composable (throwable: Throwable, previousData: T?) -> Unit = { throwable, _ ->
         ErrorScreen(
             errorMessage = throwable.message.orEmpty(),
             onRetry = onRetry ?: {}
@@ -20,21 +20,24 @@ fun <T> StateHandler(
     },
     successContent: @Composable (T) -> Unit,
 ) {
-    when {
-        state.isLoading -> {
-            loadingContent()
+    when (state) {
+        is LceUiStateOld.Loading -> {
+            loadingContent(state.previousData)
         }
 
-        state.isError -> {
-            state.error?.let { errorContent(it) }
+        is LceUiStateOld.Error -> {
+            errorContent(state.throwable, state.previousData)
         }
 
-        state.isSuccess -> {
-            state.data?.let { successContent(it) }
+        is LceUiStateOld.Success -> {
+            successContent(state.data)
         }
 
-        state.isIdle -> {
+        is LceUiStateOld.Idle -> {
             idleContent()
         }
     }
 }
+
+
+
