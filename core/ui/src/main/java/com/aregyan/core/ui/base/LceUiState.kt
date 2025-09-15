@@ -3,7 +3,7 @@ package com.aregyan.core.ui.base
 import androidx.compose.runtime.Immutable
 
 @Immutable
-data class LceUiState<out T> private constructor(
+data class LceUiState<out T>(
     val data: T? = null,
     val error: Throwable? = null,
     val type: Type
