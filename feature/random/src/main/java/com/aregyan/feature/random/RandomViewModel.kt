@@ -21,18 +21,19 @@ import javax.inject.Inject
 class RandomViewModel @Inject constructor(
     private val randomPhotoUseCase: RandomPhotoUseCase,
     private val favoritesUseCase: FavoritesUseCase,
-    private val baseAnalytics: BaseAnalytics
+    private val baseAnalytics: BaseAnalytics,
+    private val randomAnalytics: RandomAnalytics
 ) : BaseViewModel<RandomIntent, LceUiState<Photo>>() {
 
     init {
-        onIntent(RandomIntent.LoadRandomPhoto)
+        onIntent(RandomIntent.InitialLoadPhoto)
     }
 
     override fun handleIntent(intent: RandomIntent) {
         _state.value = reduce(state.value, intent)
 
         when (intent) {
-            RandomIntent.LoadRandomPhoto -> loadRandomPhoto()
+            RandomIntent.LoadNewPhoto, RandomIntent.InitialLoadPhoto -> loadRandomPhoto(intent)
             is RandomIntent.OnFavoriteClick -> onFavoriteClick(intent.photo)
             is RandomIntent.Error -> baseAnalytics.logError(intent.throwable)
             else -> {}
@@ -43,7 +44,7 @@ class RandomViewModel @Inject constructor(
         currentState: LceUiState<Photo>,
         intent: RandomIntent
     ): LceUiState<Photo> = when (intent) {
-        RandomIntent.LoadRandomPhoto ->
+        RandomIntent.LoadNewPhoto, RandomIntent.InitialLoadPhoto ->
             LceUiState.loading()
 
         is RandomIntent.PhotoLoaded ->
@@ -55,7 +56,7 @@ class RandomViewModel @Inject constructor(
         else -> currentState
     }
 
-    private fun loadRandomPhoto() {
+    private fun loadRandomPhoto(intent: RandomIntent) {
         viewModelScope.launch {
             combine(
                 randomPhotoUseCase(),
@@ -67,6 +68,9 @@ class RandomViewModel @Inject constructor(
             }.onEach { result ->
                 result.onSuccess { photo ->
                     onIntent(RandomIntent.PhotoLoaded(photo))
+                    if (intent is RandomIntent.LoadNewPhoto) {
+                        randomAnalytics.logLoadNewPhoto(photo.imageUrl)
+                    }
                 }.onFailure { throwable ->
                     onIntent(RandomIntent.Error(throwable))
                 }
@@ -83,7 +87,8 @@ class RandomViewModel @Inject constructor(
 }
 
 sealed class RandomIntent : UiIntent {
-    object LoadRandomPhoto : RandomIntent()
+    object InitialLoadPhoto : RandomIntent()
+    object LoadNewPhoto : RandomIntent()
     data class OnFavoriteClick(val photo: Photo) : RandomIntent()
     data class PhotoLoaded(val photo: Photo) : RandomIntent()
     data class Error(val throwable: Throwable) : RandomIntent(), SystemIntentMarker

@@ -1,7 +1,7 @@
 package com.aregyan.core.analytics
 
-open class BaseAnalytics(
-    protected val tracker: AnalyticsTracker
+class BaseAnalytics(
+    val tracker: AnalyticsTracker
 ) {
     fun logError(throwable: Throwable, eventName: String = EVENT_GENERIC_ERROR) {
         tracker.log(

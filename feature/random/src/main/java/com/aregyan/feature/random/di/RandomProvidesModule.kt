@@ -1,5 +1,7 @@
 package com.aregyan.feature.random.di
 
+import com.aregyan.core.analytics.AnalyticsTracker
+import com.aregyan.feature.random.RandomAnalytics
 import com.aregyan.feature.random.data.RandomApiService
 import dagger.Module
 import dagger.Provides
@@ -16,4 +18,8 @@ class RandomProvidesModule {
     fun provideRandomApiService(retrofit: Retrofit): RandomApiService {
         return retrofit.create(RandomApiService::class.java)
     }
+
+    @Provides
+    fun provideRandomAnalytics(tracker: AnalyticsTracker): RandomAnalytics =
+        RandomAnalytics(tracker)
 }

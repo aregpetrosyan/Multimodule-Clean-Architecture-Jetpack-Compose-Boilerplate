@@ -40,7 +40,7 @@ fun RandomScreen(
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
                     .padding(32.dp),
-                onClick = { viewModel.onIntent(RandomIntent.LoadRandomPhoto) },
+                onClick = { viewModel.onIntent(RandomIntent.LoadNewPhoto) },
             ) {
                 Icon(painterResource(R.drawable.ic_refresh_24dp), "Refresh")
             }
