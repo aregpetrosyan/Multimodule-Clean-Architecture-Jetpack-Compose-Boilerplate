@@ -1,6 +1,7 @@
 package com.aregyan.feature.favorites
 
 import androidx.lifecycle.viewModelScope
+import com.aregyan.core.analytics.BaseAnalytics
 import com.aregyan.core.domain.Photo
 import com.aregyan.core.ui.base.BaseViewModel
 import com.aregyan.core.ui.base.LceUiState
@@ -16,7 +17,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class FavoritesViewModel @Inject constructor(
-    private val favoritesUseCase: FavoritesUseCase
+    private val favoritesUseCase: FavoritesUseCase,
+    private val baseAnalytics: BaseAnalytics
 ) : BaseViewModel<FavoritesIntent, LceUiState<FavoriteState>>() {
 
     init {
@@ -30,6 +32,7 @@ class FavoritesViewModel @Inject constructor(
             FavoritesIntent.LoadFavorites -> loadFavorites()
             is FavoritesIntent.OnFavoriteClick -> toggleFavorite(intent.photo)
             is FavoritesIntent.OnSimilarClick -> navigateToSimilar(intent.photo)
+            is FavoritesIntent.OnPhotoClick -> baseAnalytics.logOpenImage(intent.photo?.imageUrl.orEmpty())
             else -> { /* No side effects for other intents */
             }
         }
@@ -68,12 +71,14 @@ class FavoritesViewModel @Inject constructor(
         viewModelScope.launch {
             favoritesUseCase.toggleFavorite(photo)
         }
+        baseAnalytics.logFavoriteSelection(photo.imageUrl, !photo.isFavorite)
     }
 
     private fun navigateToSimilar(photo: Photo) {
         viewModelScope.launch {
             _navigationEvents.emit(FavoriteNavigationEvent.ShowSimilarPhotos(photo))
         }
+        baseAnalytics.logOpenSimilarImages(photo.imageUrl)
     }
 }
 

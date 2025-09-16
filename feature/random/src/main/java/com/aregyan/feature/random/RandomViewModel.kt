@@ -1,8 +1,7 @@
 package com.aregyan.feature.random
 
 import androidx.lifecycle.viewModelScope
-import com.aregyan.core.analytics.AnalyticsTracker
-import com.aregyan.core.analytics.failure
+import com.aregyan.core.analytics.BaseAnalytics
 import com.aregyan.core.domain.Photo
 import com.aregyan.core.ui.base.BaseViewModel
 import com.aregyan.core.ui.base.LceUiState
@@ -22,7 +21,7 @@ import javax.inject.Inject
 class RandomViewModel @Inject constructor(
     private val randomPhotoUseCase: RandomPhotoUseCase,
     private val favoritesUseCase: FavoritesUseCase,
-    private val analyticsTracker: AnalyticsTracker
+    private val baseAnalytics: BaseAnalytics
 ) : BaseViewModel<RandomIntent, LceUiState<Photo>>() {
 
     init {
@@ -35,8 +34,7 @@ class RandomViewModel @Inject constructor(
         when (intent) {
             RandomIntent.LoadRandomPhoto -> loadRandomPhoto()
             is RandomIntent.OnFavoriteClick -> onFavoriteClick(intent.photo)
-            is RandomIntent.PhotoLoaded -> analyticsTracker.photoLoaded(intent.photo)
-            is RandomIntent.Error -> analyticsTracker.failure(intent.throwable)
+            is RandomIntent.Error -> baseAnalytics.logError(intent.throwable)
             else -> {}
         }
     }
@@ -80,6 +78,7 @@ class RandomViewModel @Inject constructor(
         viewModelScope.launch {
             favoritesUseCase.toggleFavorite(photo)
         }
+        baseAnalytics.logFavoriteSelection(photo.imageUrl, !photo.isFavorite)
     }
 }
 

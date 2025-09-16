@@ -1,6 +1,7 @@
 package com.aregyan.feature.similar
 
 import androidx.lifecycle.viewModelScope
+import com.aregyan.core.analytics.BaseAnalytics
 import com.aregyan.core.domain.Photo
 import com.aregyan.core.ui.base.BaseViewModel
 import com.aregyan.core.ui.base.LceUiState
@@ -21,6 +22,7 @@ import javax.inject.Inject
 class SimilarViewModel @Inject constructor(
     private val similarPhotosUseCase: SimilarPhotosUseCase,
     private val favoritesUseCase: FavoritesUseCase,
+    private val baseAnalytics: BaseAnalytics
 ) : BaseViewModel<SimilarIntent, LceUiState<SimilarState>>() {
 
     override fun handleIntent(intent: SimilarIntent) {
@@ -29,6 +31,7 @@ class SimilarViewModel @Inject constructor(
         when (intent) {
             is SimilarIntent.LoadSimilarPhotos -> loadSimilarPhotos(intent.query)
             is SimilarIntent.OnFavoriteClick -> onFavoriteClick(intent.photo)
+            is SimilarIntent.Error -> baseAnalytics.logError(intent.throwable)
             else -> {}
         }
     }
@@ -80,6 +83,7 @@ class SimilarViewModel @Inject constructor(
         viewModelScope.launch {
             favoritesUseCase.toggleFavorite(photo)
         }
+        baseAnalytics.logFavoriteSelection(photo.imageUrl, !photo.isFavorite)
     }
 }
 
