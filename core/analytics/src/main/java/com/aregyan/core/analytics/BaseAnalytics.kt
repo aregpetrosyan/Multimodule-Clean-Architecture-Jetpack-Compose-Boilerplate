@@ -3,13 +3,13 @@ package com.aregyan.core.analytics
 class BaseAnalytics(
     val tracker: AnalyticsTracker
 ) {
-    fun logError(throwable: Throwable, eventName: String = EVENT_GENERIC_ERROR) {
+    fun logError(throwable: Throwable, eventName: String = AnalyticsConstants.EVENT_GENERIC_ERROR) {
         tracker.log(
             AnalyticsEvent(
                 name = eventName,
                 params = mapOf(
-                    PARAM_MESSAGE to (throwable.message ?: "Unknown"),
-                    PARAM_TYPE to throwable::class.java.simpleName
+                    AnalyticsConstants.PARAM_MESSAGE to (throwable.message ?: "Unknown"),
+                    AnalyticsConstants.PARAM_TYPE to throwable::class.java.simpleName
                 )
             )
         )
@@ -18,10 +18,10 @@ class BaseAnalytics(
     fun logFavoriteSelection(itemId: String, isFavorite: Boolean) {
         tracker.log(
             AnalyticsEvent(
-                name = EVENT_FAVORITE_SELECTION,
+                name = AnalyticsConstants.EVENT_FAVORITE_SELECTION,
                 params = mapOf(
-                    PARAM_ITEM_ID to itemId,
-                    PARAM_IS_FAVORITE to isFavorite
+                    AnalyticsConstants.PARAM_ITEM_ID to itemId,
+                    AnalyticsConstants.PARAM_IS_FAVORITE to isFavorite
                 )
             )
         )
@@ -30,8 +30,8 @@ class BaseAnalytics(
     fun logOpenImage(imageId: String) {
         tracker.log(
             AnalyticsEvent(
-                name = EVENT_OPEN_IMAGE,
-                params = mapOf(PARAM_IMAGE_ID to imageId)
+                name = AnalyticsConstants.EVENT_OPEN_IMAGE,
+                params = mapOf(AnalyticsConstants.PARAM_IMAGE_ID to imageId)
             )
         )
     }
@@ -39,22 +39,9 @@ class BaseAnalytics(
     fun logOpenSimilarImages(imageId: String) {
         tracker.log(
             AnalyticsEvent(
-                name = EVENT_OPEN_SIMILAR_IMAGES,
-                params = mapOf(PARAM_IMAGE_ID to imageId)
+                name = AnalyticsConstants.EVENT_OPEN_SIMILAR_IMAGES,
+                params = mapOf(AnalyticsConstants.PARAM_IMAGE_ID to imageId)
             )
         )
-    }
-
-    companion object {
-        const val EVENT_GENERIC_ERROR = "generic_error"
-        const val EVENT_FAVORITE_SELECTION = "favorite_selection"
-        const val EVENT_OPEN_IMAGE = "open_image"
-        const val EVENT_OPEN_SIMILAR_IMAGES = "open_similar_images"
-
-        const val PARAM_MESSAGE = "message"
-        const val PARAM_TYPE = "type"
-        const val PARAM_ITEM_ID = "item_id"
-        const val PARAM_IMAGE_ID = "image_id"
-        const val PARAM_IS_FAVORITE = "is_favorite"
     }
 }
