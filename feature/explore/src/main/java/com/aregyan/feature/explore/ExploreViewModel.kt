@@ -1,8 +1,7 @@
 package com.aregyan.feature.explore
 
 import androidx.lifecycle.viewModelScope
-import com.aregyan.core.analytics.AnalyticsTracker
-import com.aregyan.core.analytics.failure
+import com.aregyan.core.analytics.BaseAnalytics
 import com.aregyan.core.domain.Photo
 import com.aregyan.core.ui.base.BaseViewModel
 import com.aregyan.core.ui.base.LceUiState
@@ -24,7 +23,7 @@ import javax.inject.Inject
 class ExploreViewModel @Inject constructor(
     private val explorePhotosUseCase: ExplorePhotosUseCase,
     private val favoritesUseCase: FavoritesUseCase,
-    private val analyticsTracker: AnalyticsTracker
+    private val baseAnalytics: BaseAnalytics
 ) : BaseViewModel<ExploreIntent, LceUiState<ExploreState>>() {
 
     init {
@@ -38,8 +37,7 @@ class ExploreViewModel @Inject constructor(
             ExploreIntent.LoadPhotos -> loadPhotos()
             is ExploreIntent.OnFavoriteClick -> onFavoriteClick(intent.photo)
             is ExploreIntent.OnSimilarClick -> onSimilarClick(intent.photo)
-            is ExploreIntent.PhotosLoaded -> analyticsTracker.imagesLoaded()
-            is ExploreIntent.Error -> analyticsTracker.failure(intent.throwable)
+            is ExploreIntent.Error -> baseAnalytics.logError(intent.throwable)
             else -> {}
         }
     }

@@ -24,4 +24,10 @@ object AnalyticsModule {
     fun provideAnalyticsTracker(mixpanel: MixpanelAPI): AnalyticsTracker {
         return MixpanelAnalyticsTracker(mixpanel)
     }
+
+    @Provides
+    @Singleton
+    fun provideBaseAnalytics(tracker: AnalyticsTracker): BaseAnalytics {
+        return BaseAnalytics(tracker)
+    }
 }
