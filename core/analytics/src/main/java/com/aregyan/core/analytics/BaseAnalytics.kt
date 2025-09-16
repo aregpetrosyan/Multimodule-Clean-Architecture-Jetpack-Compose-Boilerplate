@@ -36,10 +36,20 @@ open class BaseAnalytics(
         )
     }
 
+    fun logOpenSimilarImages(imageId: String) {
+        tracker.log(
+            AnalyticsEvent(
+                name = EVENT_OPEN_SIMILAR_IMAGES,
+                params = mapOf(PARAM_IMAGE_ID to imageId)
+            )
+        )
+    }
+
     companion object {
         const val EVENT_GENERIC_ERROR = "generic_error"
         const val EVENT_FAVORITE_SELECTION = "favorite_selection"
         const val EVENT_OPEN_IMAGE = "open_image"
+        const val EVENT_OPEN_SIMILAR_IMAGES = "open_similar_images"
 
         const val PARAM_MESSAGE = "message"
         const val PARAM_TYPE = "type"

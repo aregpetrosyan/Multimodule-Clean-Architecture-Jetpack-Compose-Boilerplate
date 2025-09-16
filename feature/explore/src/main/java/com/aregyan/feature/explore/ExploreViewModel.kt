@@ -38,6 +38,7 @@ class ExploreViewModel @Inject constructor(
             is ExploreIntent.OnFavoriteClick -> onFavoriteClick(intent.photo)
             is ExploreIntent.OnSimilarClick -> onSimilarClick(intent.photo)
             is ExploreIntent.Error -> baseAnalytics.logError(intent.throwable)
+            is ExploreIntent.OnPhotoClick -> baseAnalytics.logOpenImage(intent.photo?.imageUrl.orEmpty())
             else -> {}
         }
     }
@@ -92,12 +93,14 @@ class ExploreViewModel @Inject constructor(
         viewModelScope.launch {
             favoritesUseCase.toggleFavorite(photo)
         }
+        baseAnalytics.logFavoriteSelection(photo.imageUrl, !photo.isFavorite)
     }
 
     private fun onSimilarClick(photo: Photo) {
         viewModelScope.launch {
             _navigationEvents.emit(ExploreNavigationEvent.ShowSimilarPhotos(photo))
         }
+        baseAnalytics.logOpenSimilarImages(photo.imageUrl)
     }
 }
 
