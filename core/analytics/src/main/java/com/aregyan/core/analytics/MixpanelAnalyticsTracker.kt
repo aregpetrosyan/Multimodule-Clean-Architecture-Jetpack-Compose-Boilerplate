@@ -13,6 +13,7 @@ class MixpanelAnalyticsTracker(
             props.put(key, value)
         }
         mixpanel.track(event.name, props)
+        mixpanel.flush()
     }
 
     override fun setUserProperty(property: UserProperty) {
@@ -20,5 +21,6 @@ class MixpanelAnalyticsTracker(
             put(property.key, property.value)
         }
         mixpanel.people.set(peopleProps)
+        mixpanel.flush()
     }
 }
