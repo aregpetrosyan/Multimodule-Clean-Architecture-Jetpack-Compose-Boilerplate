@@ -3,6 +3,7 @@ package com.aregyan.feature.random
 import com.aregyan.core.analytics.AnalyticsConstants
 import com.aregyan.core.analytics.AnalyticsEvent
 import com.aregyan.core.analytics.AnalyticsTracker
+import com.aregyan.core.analytics.withParam
 
 class RandomAnalytics(
     val tracker: AnalyticsTracker
@@ -10,10 +11,8 @@ class RandomAnalytics(
 
     fun logLoadNewPhoto(imageId: String) {
         tracker.log(
-            AnalyticsEvent(
-                name = LOAD_NEW_PHOTO_CLICKED,
-                params = mapOf(AnalyticsConstants.PARAM_IMAGE_ID to imageId)
-            )
+            AnalyticsEvent(LOAD_NEW_PHOTO_CLICKED)
+                .withParam(AnalyticsConstants.PARAM_IMAGE_ID, imageId)
         )
     }
 

@@ -5,3 +5,5 @@ data class AnalyticsEvent(
     val params: Map<String, Any> = emptyMap()
 )
 
+fun AnalyticsEvent.withParam(key: String, value: Any): AnalyticsEvent =
+    this.copy(params = this.params + (key to value))

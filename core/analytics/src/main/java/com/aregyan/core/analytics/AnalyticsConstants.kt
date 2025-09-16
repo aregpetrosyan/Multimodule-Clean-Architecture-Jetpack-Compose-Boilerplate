@@ -11,4 +11,6 @@ object AnalyticsConstants {
     const val PARAM_ITEM_ID = "item_id"
     const val PARAM_IMAGE_ID = "image_id"
     const val PARAM_IS_FAVORITE = "is_favorite"
+
+    const val UNKNOWN = "Unknown"
 }
