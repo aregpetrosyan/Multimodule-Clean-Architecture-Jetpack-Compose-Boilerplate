@@ -5,11 +5,11 @@ import com.aregyan.core.analytics.AnalyticsEvent
 import com.aregyan.core.analytics.AnalyticsTracker
 import com.aregyan.core.analytics.BaseAnalytics
 import com.aregyan.core.analytics.withParam
-import com.aregyan.feature.favorites.api.FavoritesAnalytics
+import com.aregyan.feature.favorites.api.FavoritesAnalyticsApi
 
 class RandomAnalytics(
     tracker: AnalyticsTracker
-) : BaseAnalytics(tracker), FavoritesAnalytics {
+) : BaseAnalytics(tracker), FavoritesAnalyticsApi {
 
     fun logLoadNewPhoto(imageId: String) {
         tracker.log(
