@@ -1,5 +1,7 @@
 package com.aregyan.feature.explore.di
 
+import com.aregyan.core.analytics.AnalyticsTracker
+import com.aregyan.feature.explore.ExploreAnalytics
 import com.aregyan.feature.explore.data.ExploreApiService
 import dagger.Module
 import dagger.Provides
@@ -15,5 +17,11 @@ class ExploreProvidesModule {
     @Singleton
     fun provideExploreApiService(retrofit: Retrofit): ExploreApiService {
         return retrofit.create(ExploreApiService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideExploreAnalytics(tracker: AnalyticsTracker): ExploreAnalytics {
+        return ExploreAnalytics(tracker)
     }
 }

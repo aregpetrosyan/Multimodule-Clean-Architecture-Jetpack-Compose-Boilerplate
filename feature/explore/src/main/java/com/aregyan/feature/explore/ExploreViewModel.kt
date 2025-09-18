@@ -1,7 +1,6 @@
 package com.aregyan.feature.explore
 
 import androidx.lifecycle.viewModelScope
-import com.aregyan.core.analytics.BaseAnalytics
 import com.aregyan.core.domain.Photo
 import com.aregyan.core.ui.base.BaseViewModel
 import com.aregyan.core.ui.base.LceUiState
@@ -11,7 +10,6 @@ import com.aregyan.core.ui.base.UiEvent
 import com.aregyan.core.ui.base.UiIntent
 import com.aregyan.core.ui.base.updateSuccess
 import com.aregyan.feature.explore.domain.ExplorePhotosUseCase
-import com.aregyan.feature.favorites.api.FavoritesAnalytics
 import com.aregyan.feature.favorites.api.FavoritesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collect
@@ -24,8 +22,7 @@ import javax.inject.Inject
 class ExploreViewModel @Inject constructor(
     private val explorePhotosUseCase: ExplorePhotosUseCase,
     private val favoritesUseCase: FavoritesUseCase,
-    private val baseAnalytics: BaseAnalytics,
-    private val favoritesAnalytics: FavoritesAnalytics
+    private val exploreAnalytics: ExploreAnalytics
 ) : BaseViewModel<ExploreIntent, LceUiState<ExploreState>>() {
 
     init {
@@ -39,8 +36,8 @@ class ExploreViewModel @Inject constructor(
             ExploreIntent.LoadPhotos -> loadPhotos()
             is ExploreIntent.OnFavoriteClick -> onFavoriteClick(intent.photo)
             is ExploreIntent.OnSimilarClick -> onSimilarClick(intent.photo)
-            is ExploreIntent.Error -> baseAnalytics.logError(intent.throwable)
-            is ExploreIntent.OnPhotoClick -> baseAnalytics.logOpenImage(intent.photo?.imageUrl.orEmpty())
+            is ExploreIntent.Error -> exploreAnalytics.logError(intent.throwable)
+            is ExploreIntent.OnPhotoClick -> exploreAnalytics.logOpenImage(intent.photo?.imageUrl.orEmpty())
             else -> {}
         }
     }
@@ -95,14 +92,14 @@ class ExploreViewModel @Inject constructor(
         viewModelScope.launch {
             favoritesUseCase.toggleFavorite(photo)
         }
-        favoritesAnalytics.logFavoriteSelection(photo.imageUrl, !photo.isFavorite)
+        exploreAnalytics.logFavoriteSelection(photo.imageUrl, !photo.isFavorite)
     }
 
     private fun onSimilarClick(photo: Photo) {
         viewModelScope.launch {
             _navigationEvents.emit(ExploreNavigationEvent.ShowSimilarPhotos(photo))
         }
-        baseAnalytics.logOpenSimilarImages(photo.imageUrl)
+        exploreAnalytics.logOpenSimilarImages(photo.imageUrl)
     }
 }
 
