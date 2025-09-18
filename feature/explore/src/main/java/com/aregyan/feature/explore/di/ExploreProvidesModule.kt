@@ -3,6 +3,7 @@ package com.aregyan.feature.explore.di
 import com.aregyan.core.analytics.AnalyticsTracker
 import com.aregyan.feature.explore.ExploreAnalytics
 import com.aregyan.feature.explore.data.ExploreApiService
+import com.aregyan.feature.favorites.api.FavoritesAnalyticsApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -21,7 +22,10 @@ class ExploreProvidesModule {
 
     @Provides
     @Singleton
-    fun provideExploreAnalytics(tracker: AnalyticsTracker): ExploreAnalytics {
-        return ExploreAnalytics(tracker)
+    fun provideExploreAnalytics(
+        tracker: AnalyticsTracker,
+        favoritesAnalyticsApi: FavoritesAnalyticsApi
+    ): ExploreAnalytics {
+        return ExploreAnalytics(tracker, favoritesAnalyticsApi)
     }
 }

@@ -8,8 +8,9 @@ import com.aregyan.core.analytics.withParam
 import com.aregyan.feature.favorites.api.FavoritesAnalyticsApi
 
 class RandomAnalytics(
-    tracker: AnalyticsTracker
-) : BaseAnalytics(tracker), FavoritesAnalyticsApi {
+    tracker: AnalyticsTracker,
+    private val favoritesAnalyticsApi: FavoritesAnalyticsApi
+) : BaseAnalytics(tracker), FavoritesAnalyticsApi by favoritesAnalyticsApi {
 
     fun logLoadNewPhoto(imageId: String) {
         tracker.log(

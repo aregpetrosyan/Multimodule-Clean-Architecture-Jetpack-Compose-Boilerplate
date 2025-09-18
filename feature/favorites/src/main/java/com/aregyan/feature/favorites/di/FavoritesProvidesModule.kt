@@ -2,7 +2,8 @@ package com.aregyan.feature.favorites.di
 
 import com.aregyan.core.analytics.AnalyticsTracker
 import com.aregyan.core.datastore.DataStoreManager
-import com.aregyan.feature.favorites.FavoriteAnalytics
+import com.aregyan.feature.favorites.FavoritesAnalytics
+import com.aregyan.feature.favorites.api.FavoritesAnalyticsApi
 import com.aregyan.feature.favorites.data.FavoritesPreferences
 import dagger.Module
 import dagger.Provides
@@ -20,6 +21,11 @@ class FavoritesProvidesModule {
     }
 
     @Provides
-    fun provideRandomAnalytics(tracker: AnalyticsTracker): FavoriteAnalytics =
-        FavoriteAnalytics(tracker)
+    @Singleton
+    fun provideFavoritesAnalytics(
+        tracker: AnalyticsTracker,
+        favoritesAnalyticsApi: FavoritesAnalyticsApi
+    ): FavoritesAnalytics {
+        return FavoritesAnalytics(tracker, favoritesAnalyticsApi)
+    }
 }

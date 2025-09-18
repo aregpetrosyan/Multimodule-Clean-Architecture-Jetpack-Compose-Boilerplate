@@ -1,6 +1,7 @@
 package com.aregyan.feature.similar.di
 
 import com.aregyan.core.analytics.AnalyticsTracker
+import com.aregyan.feature.favorites.api.FavoritesAnalyticsApi
 import com.aregyan.feature.similar.SimilarAnalytics
 import com.aregyan.feature.similar.data.SimilarApiService
 import dagger.Module
@@ -21,6 +22,11 @@ object SimilarProviderModule {
     }
 
     @Provides
-    fun provideSimilarAnalytics(tracker: AnalyticsTracker): SimilarAnalytics =
-        SimilarAnalytics(tracker)
+    @Singleton
+    fun provideSimilarAnalytics(
+        tracker: AnalyticsTracker,
+        favoritesAnalyticsApi: FavoritesAnalyticsApi
+    ): SimilarAnalytics {
+        return SimilarAnalytics(tracker, favoritesAnalyticsApi)
+    }
 }

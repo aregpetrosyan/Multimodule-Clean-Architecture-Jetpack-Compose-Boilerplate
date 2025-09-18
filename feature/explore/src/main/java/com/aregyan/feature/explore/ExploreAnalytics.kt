@@ -5,5 +5,6 @@ import com.aregyan.core.analytics.BaseAnalytics
 import com.aregyan.feature.favorites.api.FavoritesAnalyticsApi
 
 class ExploreAnalytics(
-    tracker: AnalyticsTracker
-) : BaseAnalytics(tracker), FavoritesAnalyticsApi
+    tracker: AnalyticsTracker,
+    private val favoritesAnalyticsApi: FavoritesAnalyticsApi
+) : BaseAnalytics(tracker), FavoritesAnalyticsApi by favoritesAnalyticsApi

@@ -17,7 +17,7 @@ import javax.inject.Inject
 @HiltViewModel
 class FavoritesViewModel @Inject constructor(
     private val favoritesUseCase: FavoritesUseCase,
-    private val favoritesAnalytics: FavoriteAnalytics
+    private val favoritesAnalytics: FavoritesAnalytics
 ) : BaseViewModel<FavoritesIntent, LceUiState<FavoriteState>>() {
 
     init {

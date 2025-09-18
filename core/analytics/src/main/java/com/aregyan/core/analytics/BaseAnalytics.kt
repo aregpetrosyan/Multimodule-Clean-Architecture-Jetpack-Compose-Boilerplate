@@ -11,14 +11,6 @@ open class BaseAnalytics(
         )
     }
 
-    fun logFavoriteSelection(itemId: String, isFavorite: Boolean) {
-        tracker.log(
-            AnalyticsEvent(name = AnalyticsConstants.EVENT_FAVORITE_SELECTION)
-                .withParam(AnalyticsConstants.PARAM_ITEM_ID, itemId)
-                .withParam(AnalyticsConstants.PARAM_IS_FAVORITE, isFavorite)
-        )
-    }
-
     fun logOpenImage(imageId: String) {
         tracker.log(
             AnalyticsEvent(name = AnalyticsConstants.EVENT_OPEN_IMAGE)

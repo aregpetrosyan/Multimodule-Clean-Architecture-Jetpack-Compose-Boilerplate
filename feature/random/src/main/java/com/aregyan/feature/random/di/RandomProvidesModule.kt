@@ -1,6 +1,7 @@
 package com.aregyan.feature.random.di
 
 import com.aregyan.core.analytics.AnalyticsTracker
+import com.aregyan.feature.favorites.api.FavoritesAnalyticsApi
 import com.aregyan.feature.random.RandomAnalytics
 import com.aregyan.feature.random.data.RandomApiService
 import dagger.Module
@@ -20,6 +21,11 @@ class RandomProvidesModule {
     }
 
     @Provides
-    fun provideRandomAnalytics(tracker: AnalyticsTracker): RandomAnalytics =
-        RandomAnalytics(tracker)
+    @Singleton
+    fun provideRandomAnalytics(
+        tracker: AnalyticsTracker,
+        favoritesAnalyticsApi: FavoritesAnalyticsApi
+    ): RandomAnalytics {
+        return RandomAnalytics(tracker, favoritesAnalyticsApi)
+    }
 }
