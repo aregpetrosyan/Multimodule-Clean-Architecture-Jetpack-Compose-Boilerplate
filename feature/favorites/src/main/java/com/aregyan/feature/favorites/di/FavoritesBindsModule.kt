@@ -1,8 +1,8 @@
 package com.aregyan.feature.favorites.di
 
-import com.aregyan.feature.favorites.FavoritesAnalyticsImpl
 import com.aregyan.feature.favorites.api.FavoritesAnalyticsApi
 import com.aregyan.feature.favorites.api.FavoritesUseCase
+import com.aregyan.feature.favorites.domain.FavoritesAnalyticsApiImpl
 import com.aregyan.feature.favorites.domain.FavoritesUseCaseImpl
 import dagger.Binds
 import dagger.Module
@@ -23,6 +23,6 @@ abstract class FavoritesBindsModule {
     @Binds
     @Singleton
     abstract fun bindFavoritesAnalytics(
-        impl: FavoritesAnalyticsImpl
+        impl: FavoritesAnalyticsApiImpl
     ): FavoritesAnalyticsApi
 }

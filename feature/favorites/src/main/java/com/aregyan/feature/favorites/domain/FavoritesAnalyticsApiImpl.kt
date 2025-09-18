@@ -1,4 +1,4 @@
-package com.aregyan.feature.favorites
+package com.aregyan.feature.favorites.domain
 
 import com.aregyan.core.analytics.AnalyticsConstants
 import com.aregyan.core.analytics.AnalyticsEvent
@@ -7,7 +7,7 @@ import com.aregyan.core.analytics.withParam
 import com.aregyan.feature.favorites.api.FavoritesAnalyticsApi
 import jakarta.inject.Inject
 
-class FavoritesAnalyticsImpl @Inject constructor(
+class FavoritesAnalyticsApiImpl @Inject constructor(
     private val tracker: AnalyticsTracker
 ) : FavoritesAnalyticsApi {
     override fun logFavoriteSelection(itemId: String, isFavorite: Boolean) {
