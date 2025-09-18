@@ -11,6 +11,7 @@ import com.aregyan.core.ui.base.UiEvent
 import com.aregyan.core.ui.base.UiIntent
 import com.aregyan.core.ui.base.updateSuccess
 import com.aregyan.feature.explore.domain.ExplorePhotosUseCase
+import com.aregyan.feature.favorites.api.FavoritesAnalytics
 import com.aregyan.feature.favorites.api.FavoritesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collect
@@ -23,7 +24,8 @@ import javax.inject.Inject
 class ExploreViewModel @Inject constructor(
     private val explorePhotosUseCase: ExplorePhotosUseCase,
     private val favoritesUseCase: FavoritesUseCase,
-    private val baseAnalytics: BaseAnalytics
+    private val baseAnalytics: BaseAnalytics,
+    private val favoritesAnalytics: FavoritesAnalytics
 ) : BaseViewModel<ExploreIntent, LceUiState<ExploreState>>() {
 
     init {
@@ -93,7 +95,7 @@ class ExploreViewModel @Inject constructor(
         viewModelScope.launch {
             favoritesUseCase.toggleFavorite(photo)
         }
-        baseAnalytics.logFavoriteSelection(photo.imageUrl, !photo.isFavorite)
+        favoritesAnalytics.logFavoriteSelection(photo.imageUrl, !photo.isFavorite)
     }
 
     private fun onSimilarClick(photo: Photo) {
