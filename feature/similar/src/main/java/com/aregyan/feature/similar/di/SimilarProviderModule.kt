@@ -1,5 +1,7 @@
 package com.aregyan.feature.similar.di
 
+import com.aregyan.core.analytics.AnalyticsTracker
+import com.aregyan.feature.similar.SimilarAnalytics
 import com.aregyan.feature.similar.data.SimilarApiService
 import dagger.Module
 import dagger.Provides
@@ -17,4 +19,8 @@ object SimilarProviderModule {
     fun provideSimilarApiService(retrofit: Retrofit): SimilarApiService {
         return retrofit.create(SimilarApiService::class.java)
     }
+
+    @Provides
+    fun provideSimilarAnalytics(tracker: AnalyticsTracker): SimilarAnalytics =
+        SimilarAnalytics(tracker)
 }
