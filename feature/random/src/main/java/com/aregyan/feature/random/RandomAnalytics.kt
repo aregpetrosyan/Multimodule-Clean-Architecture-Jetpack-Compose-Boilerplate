@@ -3,11 +3,13 @@ package com.aregyan.feature.random
 import com.aregyan.core.analytics.AnalyticsConstants
 import com.aregyan.core.analytics.AnalyticsEvent
 import com.aregyan.core.analytics.AnalyticsTracker
+import com.aregyan.core.analytics.BaseAnalytics
 import com.aregyan.core.analytics.withParam
+import com.aregyan.feature.favorites.api.FavoritesAnalytics
 
 class RandomAnalytics(
-    val tracker: AnalyticsTracker
-) {
+    tracker: AnalyticsTracker
+) : BaseAnalytics(tracker), FavoritesAnalytics {
 
     fun logLoadNewPhoto(imageId: String) {
         tracker.log(
