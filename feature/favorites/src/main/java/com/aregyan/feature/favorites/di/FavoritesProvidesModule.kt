@@ -1,6 +1,8 @@
 package com.aregyan.feature.favorites.di
 
+import com.aregyan.core.analytics.AnalyticsTracker
 import com.aregyan.core.datastore.DataStoreManager
+import com.aregyan.feature.favorites.FavoriteAnalyticsInternal
 import com.aregyan.feature.favorites.data.FavoritesPreferences
 import dagger.Module
 import dagger.Provides
@@ -16,4 +18,8 @@ class FavoritesProvidesModule {
     fun provideFavoritesPreferences(dataStoreManager: DataStoreManager): FavoritesPreferences {
         return FavoritesPreferences(dataStoreManager)
     }
+
+    @Provides
+    fun provideRandomAnalytics(tracker: AnalyticsTracker): FavoriteAnalyticsInternal =
+        FavoriteAnalyticsInternal(tracker)
 }
