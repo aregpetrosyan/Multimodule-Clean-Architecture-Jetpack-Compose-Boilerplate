@@ -12,8 +12,6 @@ android {
 
     defaultConfig {
         minSdk = 28
-
-        buildConfigField("String", "UNSPLASH_ACCESS_KEY", "\"${properties["UNSPLASH_ACCESS_KEY"]}\"")
     }
 
     compileOptions {
@@ -23,7 +21,6 @@ android {
     kotlin {
         jvmToolchain(17)
     }
-    buildFeatures.buildConfig = true
 }
 
 dependencies {
