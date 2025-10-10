@@ -18,12 +18,12 @@ class AuthInterceptor : Interceptor {
     companion object {
         // Hardcoded Base64-encoded API key for testing / boilerplate only.
         // WARNING: This is NOT secure.
-        private const val ENCRYPTED_API_KEY =
+        private const val ENCODED_API_KEY =
             "cXl2S05OM1ExREpCNzhFbnBvZ195V3JUUmhSMll1SnBPNEc5XzFVZWcwcw=="
     }
 
     override fun intercept(chain: Interceptor.Chain): Response {
-        val key = String(Base64.decode(ENCRYPTED_API_KEY, Base64.DEFAULT))
+        val key = String(Base64.decode(ENCODED_API_KEY, Base64.DEFAULT))
         val request = chain.request()
             .newBuilder()
             .addHeader("Authorization", "Client-ID $key")
