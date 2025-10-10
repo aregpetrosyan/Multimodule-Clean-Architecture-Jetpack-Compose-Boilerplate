@@ -6,10 +6,11 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.painterResource
 import androidx.navigation3.runtime.NavBackStack
+import androidx.navigation3.runtime.NavKey
 
 @Composable
 fun AppBottomNavigationBar(
-    backStack: NavBackStack
+    backStack: NavBackStack<NavKey>
 ) {
     val tabs = listOf(
         Routes.Explore to R.drawable.explore_24dp,
@@ -45,7 +46,7 @@ fun AppBottomNavigationBar(
 }
 
 // Extension for cleaner back stack manipulation
-fun NavBackStack.removeLastUntil(predicate: (Any?) -> Boolean) {
+fun NavBackStack<NavKey>.removeLastUntil(predicate: (NavKey) -> Boolean) {
     while (lastOrNull()?.let { !predicate(it) } == true) {
         removeLastOrNull()
     }
