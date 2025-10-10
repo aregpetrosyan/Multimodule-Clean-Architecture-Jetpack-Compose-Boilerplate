@@ -5,19 +5,18 @@ import okhttp3.Interceptor
 import okhttp3.Response
 
 /**
- * NOTE: The API key below is hardcoded and only encoded with Base64 (not real encryption).
- * This is insecure and should ONLY be used for local testing or a boilerplate/sample project.
+ * NOTE: The API key below is hardcoded and only Base64-encoded for simplicity.
+ * This is included here solely for demonstration and convenience in this boilerplate project.
  *
- * Do NOT ship this to production. For production apps consider:
- *  - Moving the key to a secure backend and calling the API from your server,
- *  - Using Android Keystore + AES to protect the key,
- *  - Issuing short-lived tokens from your server.
+ * In a real application, avoid hardcoding keys. Instead, consider:
+ *  - Retrieving it securely from your backend,
+ *  - Using Android Keystore + encryption,
+ *  - Or providing it via build-time configuration (e.g., BuildConfig or environment variables).
  */
 class AuthInterceptor : Interceptor {
 
     companion object {
-        // Hardcoded Base64-encoded API key for testing / boilerplate only.
-        // WARNING: This is NOT secure.
+        // Base64-encoded API key used for simplicity in this boilerplate project.
         private const val ENCODED_API_KEY =
             "cXl2S05OM1ExREpCNzhFbnBvZ195V3JUUmhSMll1SnBPNEc5XzFVZWcwcw=="
     }
