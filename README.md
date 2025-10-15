@@ -19,6 +19,12 @@ implements the **MVI (Model-View-Intent)** pattern for robust state management.
 - Hilt for dependency injection
 - Mixpanel analytics integration
 
+## Screenshots
+
+| Random | Explore | Favorites |
+|---|---|---|
+| ![Random](screenshots/random.png) | ![Explore](screenshots/explore.png) | ![Favorites](screenshots/favorites.png) |
+
 ## Architecture
 
 ### Clean Architecture Layers
@@ -57,3 +63,4 @@ The app uses the Model-View-Intent (MVI) pattern in the presentation layer:
 1. Clone the repository:
    ```sh
    git clone git@github.com:aregpetrosyan/Multimodule-Clean-Architecture-Jetpack-Compose.git
+```
