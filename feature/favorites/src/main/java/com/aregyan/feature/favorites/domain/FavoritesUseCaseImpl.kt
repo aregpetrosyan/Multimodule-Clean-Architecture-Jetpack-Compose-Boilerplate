@@ -3,7 +3,7 @@ package com.aregyan.feature.favorites.domain
 import com.aregyan.core.domain.Photo
 import com.aregyan.feature.favorites.api.FavoritesUseCase
 import com.aregyan.feature.favorites.data.FavoritesRepository
-import jakarta.inject.Inject
+import javax.inject.Inject
 
 class FavoritesUseCaseImpl @Inject constructor(
     private val favoritesRepository: FavoritesRepository
