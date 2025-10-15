@@ -31,7 +31,7 @@ class FavoritesViewModel @Inject constructor(
             FavoritesIntent.LoadFavorites -> loadFavorites()
             is FavoritesIntent.OnFavoriteClick -> toggleFavorite(intent.photo)
             is FavoritesIntent.OnSimilarClick -> navigateToSimilar(intent.photo)
-            is FavoritesIntent.OnPhotoClick -> favoritesAnalytics.logOpenImage(intent.photo?.imageUrl.orEmpty())
+            is FavoritesIntent.OnPhotoClick -> favoritesAnalytics.logOpenImage(intent.photo?.imageUrl)
             else -> { /* No side effects for other intents */
             }
         }

@@ -11,10 +11,10 @@ open class BaseAnalytics(
         )
     }
 
-    fun logOpenImage(imageId: String) {
+    fun logOpenImage(imageId: String?) {
         tracker.log(
             AnalyticsEvent(name = AnalyticsConstants.EVENT_OPEN_IMAGE)
-                .withParam(AnalyticsConstants.PARAM_IMAGE_ID, imageId)
+                .withParam(AnalyticsConstants.PARAM_IMAGE_ID, imageId ?: AnalyticsConstants.UNKNOWN)
         )
     }
 

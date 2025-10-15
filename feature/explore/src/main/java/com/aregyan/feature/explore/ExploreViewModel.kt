@@ -37,7 +37,7 @@ class ExploreViewModel @Inject constructor(
             is ExploreIntent.OnFavoriteClick -> onFavoriteClick(intent.photo)
             is ExploreIntent.OnSimilarClick -> onSimilarClick(intent.photo)
             is ExploreIntent.Error -> exploreAnalytics.logError(intent.throwable)
-            is ExploreIntent.OnPhotoClick -> exploreAnalytics.logOpenImage(intent.photo?.imageUrl.orEmpty())
+            is ExploreIntent.OnPhotoClick -> exploreAnalytics.logOpenImage(intent.photo?.imageUrl)
             else -> {}
         }
     }
