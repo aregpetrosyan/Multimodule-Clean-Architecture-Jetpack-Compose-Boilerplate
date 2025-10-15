@@ -19,6 +19,7 @@ android {
 
     defaultConfig {
         minSdk = 28
+        // This is hardcoded for simplification purposes. In a real-world scenario, this should be stored securely.
         buildConfigField("String", "MIXPANEL_API_TOKEN", "\"ZjMyYzlkODY0MWQ0YTQyOTc4ZGFmYzQ1Y2E0MTE4YTU=\"")
     }
 
