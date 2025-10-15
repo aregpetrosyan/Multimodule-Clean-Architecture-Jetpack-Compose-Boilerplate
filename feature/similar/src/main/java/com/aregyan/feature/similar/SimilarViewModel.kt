@@ -22,7 +22,7 @@ class SimilarViewModel @Inject constructor(
     private val similarPhotosUseCase: SimilarPhotosUseCase,
     private val favoritesUseCase: FavoritesUseCase,
     private val similarAnalytics: SimilarAnalytics
-) : BaseViewModel<SimilarIntent, LceUiState<SimilarState>>() {
+) : BaseViewModel<SimilarIntent, SimilarState>() {
 
     override fun handleIntent(intent: SimilarIntent) {
         _state.value = reduce(state.value, intent)

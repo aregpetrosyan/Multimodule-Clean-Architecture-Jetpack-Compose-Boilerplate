@@ -23,7 +23,7 @@ class ExploreViewModel @Inject constructor(
     private val explorePhotosUseCase: ExplorePhotosUseCase,
     private val favoritesUseCase: FavoritesUseCase,
     private val exploreAnalytics: ExploreAnalytics
-) : BaseViewModel<ExploreIntent, LceUiState<ExploreState>>() {
+) : BaseViewModel<ExploreIntent, ExploreState>() {
 
     init {
         onIntent(ExploreIntent.LoadPhotos)

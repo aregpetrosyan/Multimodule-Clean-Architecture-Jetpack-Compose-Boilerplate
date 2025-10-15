@@ -21,7 +21,7 @@ class RandomViewModel @Inject constructor(
     private val randomPhotoUseCase: RandomPhotoUseCase,
     private val favoritesUseCase: FavoritesUseCase,
     private val randomAnalytics: RandomAnalytics
-) : BaseViewModel<RandomIntent, LceUiState<Photo>>() {
+) : BaseViewModel<RandomIntent, Photo>() {
 
     init {
         onIntent(RandomIntent.InitialLoadPhoto)

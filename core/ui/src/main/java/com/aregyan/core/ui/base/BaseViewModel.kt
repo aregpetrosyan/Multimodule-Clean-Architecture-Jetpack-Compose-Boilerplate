@@ -19,21 +19,18 @@ interface SystemIntentMarker     // Marks intents that are results of side-effec
 /**
  * BaseViewModel implementing a unidirectional MVI pattern.
  * I = type of Intent
- * S = type of State
+ * T = type of the data within LceUiState
  */
-abstract class BaseViewModel<I : UiIntent, S : UiState> : ViewModel() {
+abstract class BaseViewModel<I : UiIntent, T : Any> : ViewModel() {
 
     /**
      * Backing mutable state flow holding the current UI state.
-     * Initialized with a default Idle state if S is LceUiState.
+     * Initialized with a default Idle state.
      */
-    protected val _state: MutableStateFlow<S> by lazy {
-        @Suppress("UNCHECKED_CAST")
-        MutableStateFlow((LceUiState.idle<Any>() as S))
-    }
+    protected val _state: MutableStateFlow<LceUiState<T>> = MutableStateFlow(LceUiState.idle())
 
     /** Public read-only state flow for observing state in the UI. */
-    val state: StateFlow<S> = _state.asStateFlow()
+    val state: StateFlow<LceUiState<T>> = _state.asStateFlow()
 
     /** Shared flow for one-time events like navigation or snackbars. */
     protected val _navigationEvents = MutableSharedFlow<UiEvent>()
@@ -74,5 +71,5 @@ abstract class BaseViewModel<I : UiIntent, S : UiState> : ViewModel() {
     protected abstract fun handleIntent(intent: I)
 
     /** Pure function that reduces current state + intent into a new state. Must be implemented by each ViewModel. */
-    protected abstract fun reduce(currentState: S, intent: I): S
+    protected abstract fun reduce(currentState: LceUiState<T>, intent: I): LceUiState<T>
 }

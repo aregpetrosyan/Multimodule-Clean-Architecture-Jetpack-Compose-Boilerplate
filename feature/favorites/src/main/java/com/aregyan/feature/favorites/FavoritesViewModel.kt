@@ -18,7 +18,7 @@ import javax.inject.Inject
 class FavoritesViewModel @Inject constructor(
     private val favoritesUseCase: FavoritesUseCase,
     private val favoritesAnalytics: FavoritesAnalytics
-) : BaseViewModel<FavoritesIntent, LceUiState<FavoriteState>>() {
+) : BaseViewModel<FavoritesIntent, FavoriteState>() {
 
     init {
         onIntent(FavoritesIntent.LoadFavorites)
