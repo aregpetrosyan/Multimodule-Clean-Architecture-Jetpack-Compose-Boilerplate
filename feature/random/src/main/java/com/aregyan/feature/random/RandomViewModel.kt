@@ -66,7 +66,7 @@ class RandomViewModel @Inject constructor(
             }.onEach { result ->
                 result.onSuccess { photo ->
                     onIntent(RandomIntent.PhotoLoaded(photo))
-                    if (intent is RandomIntent.LoadNewPhoto) {
+                    if (intent !is RandomIntent.InitialLoadPhoto) {
                         randomAnalytics.logLoadNewPhoto(photo.imageUrl)
                     }
                 }.onFailure { throwable ->
