@@ -5,7 +5,7 @@ import com.aregyan.core.analytics.AnalyticsEvent
 import com.aregyan.core.analytics.AnalyticsTracker
 import com.aregyan.core.analytics.withParam
 import com.aregyan.feature.favorites.api.FavoritesAnalyticsApi
-import jakarta.inject.Inject
+import javax.inject.Inject
 
 class FavoritesAnalyticsApiImpl @Inject constructor(
     private val tracker: AnalyticsTracker
