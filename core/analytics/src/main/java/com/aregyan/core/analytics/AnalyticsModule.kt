@@ -15,21 +15,16 @@ import javax.inject.Singleton
 object AnalyticsModule {
 
     /**
-     * NOTE: The Mixpanel token below is hardcoded and only Base64-encoded for simplicity.
-     * It is included here solely for demonstration and convenience in this boilerplate project.
+     * NOTE: The Mixpanel token is provided via BuildConfig.
      *
-     * In a real application, avoid hardcoding tokens. Instead, consider:
-     *  - Fetching the token securely from a backend service,
-     *  - Storing it in encrypted storage or the Android Keystore,
-     *  - Or providing it via build-time configuration (e.g., BuildConfig or environment variables).
+     * In a real application, consider more robust security practices, such as:
+     *  - Fetching the token securely from a backend service.
+     *  - Storing it in encrypted storage or the Android Keystore.
      */
     @Provides
     @Singleton
     fun provideMixpanel(@ApplicationContext context: Context): MixpanelAPI {
-        // Base64-encoded Mixpanel project token used for simplicity in this boilerplate project.
-        val encodedToken = "ZjMyYzlkODY0MWQ0YTQyOTc4ZGFmYzQ1Y2E0MTE4YTU="
-
-        val token = String(Base64.decode(encodedToken, Base64.DEFAULT))
+        val token = String(Base64.decode(BuildConfig.MIXPANEL_API_TOKEN, Base64.DEFAULT))
         return MixpanelAPI.getInstance(context, token, true)
     }
 

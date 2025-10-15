@@ -19,6 +19,7 @@ android {
 
     defaultConfig {
         minSdk = 28
+        buildConfigField("String", "MIXPANEL_API_TOKEN", "\"ZjMyYzlkODY0MWQ0YTQyOTc4ZGFmYzQ1Y2E0MTE4YTU=\"")
     }
 
     compileOptions {

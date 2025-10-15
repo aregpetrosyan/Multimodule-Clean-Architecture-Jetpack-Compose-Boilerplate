@@ -12,6 +12,7 @@ android {
 
     defaultConfig {
         minSdk = 28
+        buildConfigField("String", "UNSPLASH_API_KEY", "\"cXl2S05OM1ExREpCNzhFbnBvZ195V3JUUmhSMll1SnBPNEc5XzFVZWcwcw==\"")
     }
 
     compileOptions {
@@ -21,6 +22,7 @@ android {
     kotlin {
         jvmToolchain(17)
     }
+    buildFeatures.buildConfig = true
 }
 
 dependencies {
