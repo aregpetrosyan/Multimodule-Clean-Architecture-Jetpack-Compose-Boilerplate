@@ -3,7 +3,7 @@ package com.aregyan.feature.random.domain
 import com.aregyan.core.domain.Photo
 import com.aregyan.feature.random.data.RandomRepository
 import com.aregyan.feature.random.data.toDomain
-import jakarta.inject.Inject
+import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
