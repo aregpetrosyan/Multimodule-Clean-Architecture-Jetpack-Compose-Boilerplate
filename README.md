@@ -23,7 +23,7 @@ implements the **MVI (Model-View-Intent)** pattern for robust state management.
 
 | Random | Explore | Favorites |
 |---|---|---|
-| ![Random](screenshots/random.png) | ![Explore](screenshots/explore.png) | ![Favorites](screenshots/favorites.png) |
+| ![Explore](screenshots/explore.png) | ![Random](screenshots/random.png) | ![Favorites](screenshots/favorites.png) |
 
 ## Architecture
 
