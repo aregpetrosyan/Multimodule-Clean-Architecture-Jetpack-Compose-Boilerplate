@@ -63,4 +63,3 @@ The app uses the Model-View-Intent (MVI) pattern in the presentation layer:
 1. Clone the repository:
    ```sh
    git clone git@github.com:aregpetrosyan/Multimodule-Clean-Architecture-Jetpack-Compose.git
-```
