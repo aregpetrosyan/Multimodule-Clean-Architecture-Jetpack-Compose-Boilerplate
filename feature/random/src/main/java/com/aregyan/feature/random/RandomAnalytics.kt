@@ -1,16 +1,25 @@
 package com.aregyan.feature.random
 
+import com.aregyan.core.analytics.AnalyticsConstants
 import com.aregyan.core.analytics.AnalyticsEvent
 import com.aregyan.core.analytics.AnalyticsTracker
-import com.aregyan.core.analytics.UserProperty
-import com.aregyan.core.domain.Photo
+import com.aregyan.core.analytics.BaseAnalytics
+import com.aregyan.core.analytics.withParam
+import com.aregyan.feature.favorites.api.FavoritesAnalyticsApi
 
-object RandomAnalytics {
-    const val IMAGE_LOADED = "image_loaded"
-    const val IMAGE_URL = "image_url"
-}
+class RandomAnalytics(
+    tracker: AnalyticsTracker,
+    private val favoritesAnalyticsApi: FavoritesAnalyticsApi
+) : BaseAnalytics(tracker), FavoritesAnalyticsApi by favoritesAnalyticsApi {
 
-fun AnalyticsTracker.photoLoaded(photo: Photo) {
-    log(AnalyticsEvent(RandomAnalytics.IMAGE_LOADED))
-    setUserProperty(UserProperty(RandomAnalytics.IMAGE_URL, photo.imageUrl))
+    fun logLoadNewPhoto(imageId: String) {
+        tracker.log(
+            AnalyticsEvent(LOAD_NEW_PHOTO_CLICKED)
+                .withParam(AnalyticsConstants.PARAM_IMAGE_ID, imageId)
+        )
+    }
+
+    companion object {
+        const val LOAD_NEW_PHOTO_CLICKED = "load_new_photo_clicked"
+    }
 }

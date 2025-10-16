@@ -5,16 +5,16 @@ import com.aregyan.core.domain.Photo
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 
-sealed class Routes {
+sealed class Routes : NavKey {
     @Serializable
-    object Explore : NavKey
+    object Explore : Routes()
 
     @Serializable
-    object Random : NavKey
+    object Random : Routes()
 
     @Serializable
-    object Favorites : NavKey
+    object Favorites : Routes()
 
     @Serializable
-    data class Similar(@Contextual val photo: Photo) : NavKey
+    data class Similar(@Contextual val photo: Photo) : Routes()
 }

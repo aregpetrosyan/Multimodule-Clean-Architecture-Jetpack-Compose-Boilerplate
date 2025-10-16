@@ -17,10 +17,4 @@ object DataStoreModule {
     fun provideDataStoreManager(@ApplicationContext context: Context): DataStoreManager {
         return DataStoreManager(context)
     }
-
-    @Provides
-    @Singleton
-    fun provideFavoritesPreferences(dataStoreManager: DataStoreManager): FavoritesPreferences {
-        return FavoritesPreferences(dataStoreManager)
-    }
 }

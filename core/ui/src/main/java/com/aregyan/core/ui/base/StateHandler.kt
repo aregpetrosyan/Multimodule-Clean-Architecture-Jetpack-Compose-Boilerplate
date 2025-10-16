@@ -8,34 +8,33 @@ fun <T> StateHandler(
     state: LceUiState<T>,
     modifier: Modifier = Modifier,
     onRetry: (() -> Unit)? = null,
-    loadingContent: @Composable () -> Unit = { LoadingScreen(modifier) },
-    errorContent: @Composable (Throwable) -> Unit = { throwable ->
+    idleContent: @Composable () -> Unit = {},
+    loadingContent: @Composable () -> Unit = {
+        LoadingScreen(modifier)
+    },
+    errorContent: @Composable (throwable: Throwable) -> Unit = { throwable ->
         ErrorScreen(
             errorMessage = throwable.message.orEmpty(),
             onRetry = onRetry ?: {}
         )
     },
-    idleContent: @Composable () -> Unit = {},
     successContent: @Composable (T) -> Unit,
 ) {
-    when (state) {
-        is LceUiState.Loading -> {
+    when {
+        state.isLoading -> {
             loadingContent()
         }
 
-        is LceUiState.Error -> {
-            errorContent(state.throwable)
+        state.isError -> {
+            state.error?.let { errorContent(it) }
         }
 
-        is LceUiState.Success -> {
-            successContent(state.data)
+        state.isSuccess -> {
+            state.data?.let { successContent(it) }
         }
 
-        is LceUiState.Idle -> {
+        state.isIdle -> {
             idleContent()
         }
     }
 }
-
-
-

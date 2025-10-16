@@ -8,7 +8,7 @@ import com.aregyan.feature.favorites.FavoritesScreen
 import com.aregyan.feature.random.RandomScreen
 import com.aregyan.feature.similar.SimilarScreen
 
-fun appNavEntryProvider(key: NavKey, backStack: NavBackStack): NavEntry<NavKey> =
+fun appNavEntryProvider(key: NavKey, backStack: NavBackStack<NavKey>): NavEntry<NavKey> =
     when (key) {
         is Routes.Explore -> NavEntry(key) {
             ExploreScreen(

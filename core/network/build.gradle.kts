@@ -12,8 +12,8 @@ android {
 
     defaultConfig {
         minSdk = 28
-
-        buildConfigField("String", "UNSPLASH_ACCESS_KEY", "\"${properties["UNSPLASH_ACCESS_KEY"]}\"")
+        // This is hardcoded for simplification purposes. In a real-world scenario, this should be stored securely.
+        buildConfigField("String", "UNSPLASH_API_KEY", "\"cXl2S05OM1ExREpCNzhFbnBvZ195V3JUUmhSMll1SnBPNEc5XzFVZWcwcw==\"")
     }
 
     compileOptions {

@@ -12,7 +12,6 @@ val localProperties = Properties()
 if (localPropsFile.exists()) {
     localProperties.load(localPropsFile.inputStream())
 }
-val mixpanelToken: String = localProperties.getProperty("MIXPANEL_TOKEN")
 
 android {
     namespace = "com.aregyan.core.analytics"
@@ -20,8 +19,8 @@ android {
 
     defaultConfig {
         minSdk = 28
-
-        buildConfigField("String", "MIXPANEL_TOKEN", "\"$mixpanelToken\"")
+        // This is hardcoded for simplification purposes. In a real-world scenario, this should be stored securely.
+        buildConfigField("String", "MIXPANEL_API_TOKEN", "\"ZjMyYzlkODY0MWQ0YTQyOTc4ZGFmYzQ1Y2E0MTE4YTU=\"")
     }
 
     compileOptions {

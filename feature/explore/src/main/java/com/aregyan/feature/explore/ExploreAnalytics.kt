@@ -1,12 +1,10 @@
 package com.aregyan.feature.explore
 
-import com.aregyan.core.analytics.AnalyticsEvent
 import com.aregyan.core.analytics.AnalyticsTracker
+import com.aregyan.core.analytics.BaseAnalytics
+import com.aregyan.feature.favorites.api.FavoritesAnalyticsApi
 
-object ExploreAnalytics {
-    const val IMAGES_LOADED = "images_loaded"
-}
-
-fun AnalyticsTracker.imagesLoaded() {
-    log(AnalyticsEvent(ExploreAnalytics.IMAGES_LOADED))
-}
+class ExploreAnalytics(
+    tracker: AnalyticsTracker,
+    private val favoritesAnalyticsApi: FavoritesAnalyticsApi
+) : BaseAnalytics(tracker), FavoritesAnalyticsApi by favoritesAnalyticsApi
